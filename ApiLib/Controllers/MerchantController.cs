@@ -50,7 +50,6 @@ namespace ApiLib.Controllers
                 var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, "NotFound", "Group", groupId);
                 return NotFound(error);
             }
-
             return Ok(merchants);
         }
 
@@ -63,24 +62,20 @@ namespace ApiLib.Controllers
                 var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, "NotFound", "Merchant", merchantId);
                 return NotFound(error);
             }
-
             return Ok(updatedMerchant);
         }
 
         [HttpPost("{groupId}")]
         public async Task<ActionResult<MerchantDTO>> AddMerchant(long groupId, [FromBody] MerchantRequest request)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var merchant = await _merchantService.AddMerchant(request, groupId);
-
             if (merchant == null)
             {
                 var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, "NotFound", "Group", groupId);
                 return NotFound(error);
             }
-
             return CreatedAtAction(nameof(GetByIdWithBranches), new { id = merchant.Id }, merchant);
         }
 
@@ -95,7 +90,6 @@ namespace ApiLib.Controllers
                 var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, "NotFound", "Merchant", merchantId);
                 return NotFound(error);
             }
-
             return Ok(updated);
         }
 
@@ -104,9 +98,8 @@ namespace ApiLib.Controllers
         public async Task<ActionResult<MerchantDTO>> GetMerchantWithMainBranch(long merchantId)
         {
             var merchant = await _merchantService.GetMerchantWithMainBranch(merchantId);
-            if (merchant == null)
-                return NotFound("Merchant with main branch not found.");
-
+            
+            if (merchant == null) return NotFound("Merchant with main branch not found.");
             return Ok(merchant);
         }
 
@@ -130,8 +123,5 @@ namespace ApiLib.Controllers
         {
             return localizer["Required", "Name"];
         }
-
-
-
     }
 }

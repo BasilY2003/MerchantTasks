@@ -38,8 +38,6 @@ namespace ApiLib.Controllers
                 var messsage = LocalizedErrorHelper.Create(ErrorCode.InvalidRequest,"LoginCredentials",Array.Empty<Object>());
                 return Unauthorized(messsage);
             }
-               
-
             return Ok(new { token });
         }
     }

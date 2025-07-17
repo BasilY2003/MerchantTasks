@@ -14,14 +14,11 @@ namespace ApiLib.Controllers
     {
         private readonly MerchantGroupService _service;
 
-
-
         public MerchantGroupController(MerchantGroupService service)
-      {
+        {
             _service = service;
         }
 
-    
         [HttpGet("{id}")]
         public async Task<IActionResult> GetGroupById(long id)
         {
@@ -32,7 +29,6 @@ namespace ApiLib.Controllers
                 var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, "NotFound", "Group", id);
                 return NotFound(error);
             }
-
             return Ok(group);
         }
 
@@ -66,7 +62,6 @@ namespace ApiLib.Controllers
                 var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, "NotFound", "Group", id);
                 return NotFound(error);
             }
-
             return Ok(updated);
         }
 
@@ -80,11 +75,5 @@ namespace ApiLib.Controllers
 
             return Ok();
         }
-
-
-
-
-
-
     }
 }

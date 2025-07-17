@@ -7,7 +7,6 @@ namespace DataLib.Repository
     public class JwtTokenRepository
     {
         private readonly ISession _session;
-
         public JwtTokenRepository(ISession session)
         {
             _session = session;

@@ -22,7 +22,6 @@ namespace CommonLib.Mappings
             Map(x => x.ContactPersonId).Column("CONTACT_PERSON_ID").Not.Nullable();
             Map(x => x.CityId).Column("CITY_ID").Not.Nullable();
             Map(x => x.GovernateId).Column("GOVERNATE_ID").Not.Nullable();
-            Map(x => x.AlHai).Column("AL_HAI").Nullable();
             Map(x => x.Address).Column("ADDRESS").Not.Nullable();
             Map(x => x.Region).Column("REGION").Not.Nullable();
             Map(x => x.Fax).Column("FAX").Nullable();

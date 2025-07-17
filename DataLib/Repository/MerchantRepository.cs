@@ -78,7 +78,6 @@ namespace DataLib.Repository
                 .Fetch(m => m.MerchantBranches)
                 .SingleOrDefaultAsync()
                 .ConfigureAwait(false);
-
         }
 
         public async Task<Merchants> GetMerchantWithMainBranchTEST(long merchantId)
@@ -102,9 +101,6 @@ namespace DataLib.Repository
 
             result.m.MerchantBranches = new List<MerchantBranches> { result.b };
             return result.m;
-
-
-
         }
 
 

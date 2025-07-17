@@ -51,5 +51,4 @@ namespace CommonLib.Services
             return token;
         }
     }
-
 }

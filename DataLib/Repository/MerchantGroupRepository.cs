@@ -14,8 +14,6 @@ namespace DataLib.Repository
             _session = session;
         }
 
-       
-
         public async Task<MerchantsGroups?> GetGroupByIdAsync(long id)
         {
             var group = await _session.GetAsync<MerchantsGroups>(id);
@@ -56,9 +54,7 @@ namespace DataLib.Repository
 
         public async Task<MerchantsGroups> UpdateGroupAsync(MerchantsGroups group)
         {
-            using var tx = _session.BeginTransaction();
-
-            
+            using var tx = _session.BeginTransaction(); 
             
             await _session.UpdateAsync(group).ConfigureAwait(false);
             await tx.CommitAsync().ConfigureAwait(false);
@@ -76,10 +72,5 @@ namespace DataLib.Repository
 
             return true;
         }
-
-
-
-
-
     }
 }
