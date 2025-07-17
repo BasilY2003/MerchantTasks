@@ -1,5 +1,4 @@
-﻿
-namespace CommonLib.Localization
+﻿namespace CommonLib.Localization
 {
     public enum ErrorCode
     {
@@ -9,5 +8,4 @@ namespace CommonLib.Localization
         UnAuthorized = 401,
         TakenUserName = 409
     }
-
 }

@@ -118,8 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="InternalServerError" xml:space="preserve">
-    <value>عطل داخلي
-الرجاء التواصل مع الدعم الفني</value>
+    <value>عطل داخلي الرجاء التواصل مع الدعم الفني</value>
   </data>
   <data name="LoginCredentials" xml:space="preserve">
     <value>الاسم او كلمة المرور خاطئة.</value>

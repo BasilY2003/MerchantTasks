@@ -80,7 +80,7 @@ namespace DataLib.Repository
                 .ConfigureAwait(false);
         }
 
-        public async Task<Merchants> GetMerchantWithMainBranchTEST(long merchantId)
+        public async Task<Merchants>? GetMerchantWithMainBranchTEST(long merchantId)
         {
             var result = await _session.Query<Merchants>()
        .Join(

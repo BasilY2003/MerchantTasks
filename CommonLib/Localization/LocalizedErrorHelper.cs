@@ -13,7 +13,7 @@ namespace CommonLib.Localization
             _localizer = localizer;
         }
 
-        public static ErrorResponse Create(ErrorCode code, string key, params object[] args)
+        public static ErrorResponse Create(ErrorCode code, Exception? ex, string key, params object[] args)
         {
             if (_localizer == null)
                 throw new InvalidOperationException("LocalizedErrorHelper not initialized. Call Configure() first.");
@@ -22,9 +22,11 @@ namespace CommonLib.Localization
             return new ErrorResponse
             {
                 ErrorCode = code,
-                ErrorMessage = message
+                ErrorMessage = message,
+                Details = ex != null ? ex.Message : string.Empty,
             };
         }
+
 
     }
 }

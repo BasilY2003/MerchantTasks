@@ -22,7 +22,7 @@ namespace CommonLib.Middlewares
                 context.HttpContext.Request.Path,
                 context.HttpContext.Request.QueryString);
 
-            var problem = LocalizedErrorHelper.Create(ErrorCode.InternalServerError, "InternalServerError");
+            var problem = LocalizedErrorHelper.Create(ErrorCode.InternalServerError,ex, "InternalServerError");
             context.Result = new ObjectResult(problem)
             {
                 StatusCode = (int) problem.ErrorCode

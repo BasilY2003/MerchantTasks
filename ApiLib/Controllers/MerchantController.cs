@@ -27,7 +27,7 @@ namespace ApiLib.Controllers
             var merchant = await _merchantService.GetByIdWithGroupAsync(id);
             if (merchant == null)
             {
-                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, "NotFound", "Merchant", id);
+                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, null, "NotFound", "Merchant", id);
                 return NotFound(error);
             }
             return Ok(merchant);
@@ -47,7 +47,7 @@ namespace ApiLib.Controllers
 
             if (merchants == null)
             {
-                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, "NotFound", "Group", groupId);
+                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, null, "NotFound", "Group", groupId);
                 return NotFound(error);
             }
             return Ok(merchants);
@@ -59,7 +59,7 @@ namespace ApiLib.Controllers
             var updatedMerchant = _merchantService.ChangeMerchantGroup(merchantId, newGroupId);
             if (updatedMerchant == null)
             {
-                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, "NotFound", "Merchant", merchantId);
+                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, null, "NotFound", "Merchant", merchantId);
                 return NotFound(error);
             }
             return Ok(updatedMerchant);
@@ -73,7 +73,7 @@ namespace ApiLib.Controllers
             var merchant = await _merchantService.AddMerchant(request, groupId);
             if (merchant == null)
             {
-                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, "NotFound", "Group", groupId);
+                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, null, "NotFound", "Group", groupId);
                 return NotFound(error);
             }
             return CreatedAtAction(nameof(GetByIdWithBranches), new { id = merchant.Id }, merchant);
@@ -87,7 +87,7 @@ namespace ApiLib.Controllers
             var updated = await _merchantService.UpdateMerchant(merchantId, request);
             if (updated == null)
             {
-                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, "NotFound", "Merchant", merchantId);
+                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, null, "NotFound", "Merchant", merchantId);
                 return NotFound(error);
             }
             return Ok(updated);

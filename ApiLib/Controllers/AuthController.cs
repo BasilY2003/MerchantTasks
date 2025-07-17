@@ -23,7 +23,7 @@ namespace ApiLib.Controllers
             var success = await _authService.RegisterAsync(req.Email, req.Password);
             if (!success)
             {
-                var message = LocalizedErrorHelper.Create(ErrorCode.TakenUserName, "TakenUserName", Array.Empty<Object>());
+                var message = LocalizedErrorHelper.Create(ErrorCode.TakenUserName, null, "TakenUserName", Array.Empty<Object>());
                 return BadRequest(message);
             }
             return Ok("User registered");
@@ -35,7 +35,7 @@ namespace ApiLib.Controllers
             var token = await _authService.LoginAsync(req.Email, req.Password);
             if (token == null)
             {
-                var messsage = LocalizedErrorHelper.Create(ErrorCode.InvalidRequest,"LoginCredentials",Array.Empty<Object>());
+                var messsage = LocalizedErrorHelper.Create(ErrorCode.InvalidRequest,null, "LoginCredentials",Array.Empty<Object>());
                 return Unauthorized(messsage);
             }
             return Ok(new { token });

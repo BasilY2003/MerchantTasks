@@ -26,7 +26,7 @@ namespace ApiLib.Controllers
 
             if (group == null)
             {
-                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, "NotFound", "Group", id);
+                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, null, "NotFound", "Group", id);
                 return NotFound(error);
             }
             return Ok(group);
@@ -59,7 +59,7 @@ namespace ApiLib.Controllers
             var updated = await _service.UpdateGroupAsync(request, id);
             if (updated == null)
             {
-                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, "NotFound", "Group", id);
+                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, null, "NotFound", "Group", id);
                 return NotFound(error);
             }
             return Ok(updated);
@@ -70,7 +70,7 @@ namespace ApiLib.Controllers
         {
             var deleted = await _service.DeleteGroupAsync(id);
             if (!deleted) { 
-                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, "NotFound", "Group", id);
+                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, null, "NotFound", "Group", id);
             return NotFound(error); }
 
             return Ok();

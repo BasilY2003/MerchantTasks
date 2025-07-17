@@ -32,7 +32,7 @@ namespace CommonLib.Services
             };
         }
 
-        public async Task<MerchantGroupDto?> GetGroupWithMerchantsById(long id)
+        public async Task<MerchantGroupDto> GetGroupWithMerchantsById(long id)
         {
             var cacheKey = ByIdKeyPrefix + id;
             MerchantsGroups? group = null;
@@ -51,7 +51,6 @@ namespace CommonLib.Services
                     await _cache.SetStringAsync(cacheKey, JsonSerializer.Serialize(group, _jsonOptions), _cacheOptions);
                 }
             }
-
             if (group == null) return null;
 
             return new MerchantGroupDto

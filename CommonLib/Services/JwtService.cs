@@ -9,7 +9,6 @@ namespace CommonLib.Services
 {
     public class JwtService
     {
-
         private readonly string _secret;
         private readonly string _issuer;
         private readonly string _audience;
@@ -46,8 +45,7 @@ namespace CommonLib.Services
         public ClaimsPrincipal? ValidateToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            try
-            {
+         
                 var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
                     ValidateIssuerSigningKey = true,
@@ -62,11 +60,8 @@ namespace CommonLib.Services
 
                 return principal;
             }
-            catch
-            {
-                return null;
-            }
-        }
+           
+        
 
     }
 }
