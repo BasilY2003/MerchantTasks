@@ -13,7 +13,7 @@ namespace CommonLib.RequestBody
         [StringLength(30,
             ErrorMessageResourceType = typeof(SharedResource),
             ErrorMessageResourceName = "StringLength")]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
     
     }
 }

@@ -1,6 +1,4 @@
-﻿
-
-namespace CommonLib.Models
+﻿namespace CommonLib.Models
 {
     public class Merchants
     {

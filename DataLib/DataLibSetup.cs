@@ -10,7 +10,7 @@ namespace DataLib
     {
         public static IServiceCollection AddDataLib(this IServiceCollection services, IConfiguration config)
         {
-            var connectionString = config.GetConnectionString("OracleDb");
+            var connectionString = config.GetConnectionString("OracleDb") ?? throw new InvalidOperationException("Missing connection string: OracleDb"); ;
             var helper = new NHibernateHelper(connectionString);
 
             services.AddSingleton(helper);

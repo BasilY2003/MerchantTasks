@@ -38,23 +38,29 @@ namespace DataLib.Repository
 
             var tx = _session.BeginTransaction();
 
-            MerchantBranches branch = new MerchantBranches();
-            branch.Address = branchRequest.Address;
-            branch.IsMainBranch = branchRequest.IsMainBranch;
-            branch.CityId = branchRequest.CityId;
-            branch.BranchName = branchRequest.BranchName;
-            branch.ContactPersonId = branchRequest.ContactPersonId;
-            branch.GovernateId = branchRequest.GovernateId;
-            branch.Region = branchRequest.Region;
-            branch.Mobile = branchRequest.Mobile;
-            branch.Phone = branchRequest.Phone;
-            branch.Status = branchRequest.Status;
-            branch.Merchant = merchant;
+            MerchantBranches branch = new MerchantBranches
+            {
+                Merchant = merchant,
+                Address = branchRequest.Address,
+                IsMainBranch = branchRequest.IsMainBranch,
+                CityId = branchRequest.CityId,
+                BranchName = branchRequest.BranchName,
+                ContactPersonId = branchRequest.ContactPersonId,
+                GovernateId = branchRequest.GovernateId,
+                Region = branchRequest.Region,
+                Mobile = branchRequest.Mobile,
+                Phone = branchRequest.Phone,
+                Status = branchRequest.Status,
+                AlHai = branchRequest.AlHai,
+                Fax = branchRequest.Fax,
+                Website = branchRequest.Website,
+                Gps = branchRequest.Gps,
+            };
 
-            branch.AlHai = branchRequest.AlHai != null ? branchRequest.AlHai : null;
-            branch.Fax = branchRequest.Fax != null ? branchRequest.Fax : null;
-            branch.Website = branchRequest.Website != null ? branchRequest.Website : null;
-            branch.Gps = branchRequest.Gps != null ? branchRequest.Gps : null;
+
+
+         
+           
 
             await _session.SaveAsync(merchant);
             await tx.CommitAsync();

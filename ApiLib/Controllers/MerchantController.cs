@@ -1,13 +1,11 @@
 ﻿using CommonLib.DTOs;
 using CommonLib.Localization;
 using CommonLib.Middlewares;
-using CommonLib.Models;
 using CommonLib.RequestBody;
 using CommonLib.Services;
 using DataLib.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using System.Text.RegularExpressions;
 
 namespace ApiLib.Controllers
 {
@@ -119,12 +117,12 @@ namespace ApiLib.Controllers
             return Ok(merchants);
         }
 
-        [HttpPost("search-with-branches")]
-        public async Task<ActionResult<List<MerchantDTO>>> SearchWithBranches([FromBody] SearchRequest request)
-        {
-            var merchants = await _merchantService.SearchMerchantsWithBranches(request);
-            return Ok(merchants);
-        }
+        //[HttpPost("search-with-branches")]
+        //public async Task<ActionResult<List<MerchantDTO>>> SearchWithBranches([FromBody] SearchRequest request)
+        //{
+        //    var merchants = await _merchantService.SearchMerchantsWithBranches(request);
+        //    return Ok(merchants);
+        //}
 
 
         [HttpGet("test-locale")]

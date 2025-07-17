@@ -36,7 +36,7 @@ namespace DataLib.Resources {
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("DataLib.Resources.SharedResource", typeof(SharedResource).Assembly);
@@ -51,7 +51,7 @@ namespace DataLib.Resources {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -64,7 +64,7 @@ namespace DataLib.Resources {
         ///   Looks up a localized string similar to Server Error!!
         ///Please check customer support.
         /// </summary>
-        internal static string InternalServerError {
+        public static string InternalServerError {
             get {
                 return ResourceManager.GetString("InternalServerError", resourceCulture);
             }
@@ -73,7 +73,7 @@ namespace DataLib.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Invalid Username or Password.
         /// </summary>
-        internal static string LoginCredentials {
+        public static string LoginCredentials {
             get {
                 return ResourceManager.GetString("LoginCredentials", resourceCulture);
             }
@@ -82,7 +82,7 @@ namespace DataLib.Resources {
         /// <summary>
         ///   Looks up a localized string similar to {0} With Id: {1} is not found.
         /// </summary>
-        internal static string NotFound {
+        public static string NotFound {
             get {
                 return ResourceManager.GetString("NotFound", resourceCulture);
             }
@@ -91,7 +91,7 @@ namespace DataLib.Resources {
         /// <summary>
         ///   Looks up a localized string similar to {0} is Not Found.
         /// </summary>
-        internal static string Required {
+        public static string Required {
             get {
                 return ResourceManager.GetString("Required", resourceCulture);
             }
@@ -100,7 +100,7 @@ namespace DataLib.Resources {
         /// <summary>
         ///   Looks up a localized string similar to The {0} field must be a maximum of {1} characters..
         /// </summary>
-        internal static string StringLength {
+        public static string StringLength {
             get {
                 return ResourceManager.GetString("StringLength", resourceCulture);
             }
@@ -109,7 +109,7 @@ namespace DataLib.Resources {
         /// <summary>
         ///   Looks up a localized string similar to Username already taken please change it.
         /// </summary>
-        internal static string TakenUserName {
+        public static string TakenUserName {
             get {
                 return ResourceManager.GetString("TakenUserName", resourceCulture);
             }
@@ -118,7 +118,7 @@ namespace DataLib.Resources {
         /// <summary>
         ///   Looks up a localized string similar to You are Unauthorized..
         /// </summary>
-        internal static string UnAuthorized {
+        public static string UnAuthorized {
             get {
                 return ResourceManager.GetString("UnAuthorized", resourceCulture);
             }

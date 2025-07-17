@@ -7,7 +7,7 @@ namespace CommonLib.Models
       
         public virtual long Id { get; set; }
 
-        public virtual string Name { get; set; }
+        public virtual string Name { get; set; } = string.Empty;
 
         public virtual DateTime? DeletedAt { get; set; }
 
@@ -15,7 +15,7 @@ namespace CommonLib.Models
 
         public virtual DateTime UpdatedAt { get; set; }
 
-        public virtual IList<Merchants> Merchants { get; set; }
+        public virtual IList<Merchants>? Merchants { get; set; }
 
 
 

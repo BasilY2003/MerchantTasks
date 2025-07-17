@@ -35,13 +35,12 @@ namespace CommonLib.Services
         public async Task<MerchantGroupDto?> GetGroupWithMerchantsById(long id)
         {
             var cacheKey = ByIdKeyPrefix + id;
-
             MerchantsGroups? group = null;
 
             var cached = await _cache.GetStringAsync(cacheKey);
             if (!string.IsNullOrEmpty(cached))
             {
-                Console.WriteLine("Cache HIT for Group Entity By ID");
+                Console.WriteLine($"Cache HIT for Group Entity By ID {id}");
                 group = JsonSerializer.Deserialize<MerchantsGroups>(cached, _jsonOptions);
             }
             else
@@ -55,13 +54,26 @@ namespace CommonLib.Services
 
             if (group == null) return null;
 
-            return BuildDtoFromEntity(group);
+            return new MerchantGroupDto
+            {
+                Name = group.Name,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                Id = id,
+                Merchants = group.Merchants.Select(merchant => new MerchantDTO
+                {
+                    Id = merchant.Id,
+                    Name = merchant.Name,
+                    BusinessType = merchant.BusinessType,
+                    Status = merchant.Status,
+
+                }).ToList()
+            }; 
         }
 
         public async Task<List<MerchantGroupDto>> GetAllGroupsAsync()
         {
             var cacheKey = AllKeyPrefix;
-
             List<MerchantsGroups>? groups = null;
 
             var cached = await _cache.GetStringAsync(cacheKey);
@@ -76,13 +88,18 @@ namespace CommonLib.Services
                 await _cache.SetStringAsync(cacheKey, JsonSerializer.Serialize(groups, _jsonOptions), _cacheOptions);
             }
 
-            return groups.Select(BuildDtoFromEntity).ToList();
+            return groups.Select(group => new MerchantGroupDto
+            {
+                Id = group.Id,
+                CreatedAt = group.CreatedAt,
+                UpdatedAt = group.UpdatedAt,
+                Name = group.Name,
+            }).ToList();
         }
 
         public async Task<MerchantGroupDto> CreateGroupAsync(MerchantGroupRequest request)
         {
             var date = DateTime.UtcNow;
-
             var group = new MerchantsGroups
             {
                 Name = request.Name,
@@ -99,7 +116,10 @@ namespace CommonLib.Services
 
             return new MerchantGroupDto
             {
-
+                Id = group.Id,
+                CreatedAt = group.CreatedAt,
+                UpdatedAt = group.UpdatedAt,
+                Name = group.Name,
             };
         }
 
@@ -111,15 +131,18 @@ namespace CommonLib.Services
             group.Name = request.Name;
             group.UpdatedAt = DateTime.UtcNow;
 
-
-            await _repository.UpdateGroupAsync(group);
-
-            await _cache.RemoveAsync(AllKeyPrefix);
-
             var cacheKey = ByIdKeyPrefix + group.Id;
+            await _repository.UpdateGroupAsync(group);
+            await _cache.RemoveAsync(AllKeyPrefix);
             await _cache.SetStringAsync(cacheKey, JsonSerializer.Serialize(group, _jsonOptions), _cacheOptions);
 
-            return BuildDtoFromEntity(group);
+            return new MerchantGroupDto
+            {
+                Id = group.Id,
+                CreatedAt = group.CreatedAt,
+                UpdatedAt = group.UpdatedAt,
+                Name = group.Name,
+            };
         }
 
         public async Task<bool> DeleteGroupAsync(long groupId)
@@ -134,28 +157,6 @@ namespace CommonLib.Services
             await _cache.RemoveAsync(ByIdKeyPrefix + groupId);
 
             return true;
-        }
-
-        private MerchantGroupDto BuildDtoFromEntity(MerchantsGroups group)
-        {
-            return new MerchantGroupDto.Builder()
-                .WithId(group.Id)
-                .WithName(group.Name)
-                .WithCreatedAt(group.CreatedAt)
-                .WithUpdatedAt(group.UpdatedAt)
-                .WithDeletedAt(group.DeletedAt)
-                .WithMerchants(group.Merchants?.Select(merchant => new MerchantDTO.Builder()
-                    .WithId(merchant.Id)
-                    .WithName(merchant.Name)
-                    .WithStatus(merchant.Status)
-                    .WithBusinessType(merchant.BusinessType)
-                    .WithDeletedAt(merchant.DeletedAt)
-                    .WithCreatedAt(merchant.CreatedAt)
-                    .WithUpdatedAt(merchant.UpdatedAt)
-                    .WithManagerName(merchant.ManagerName)
-                    .Build()
-                ).ToList() ?? new List<MerchantDTO>())
-                .Build();
         }
     }
 }

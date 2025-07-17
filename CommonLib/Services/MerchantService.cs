@@ -1,10 +1,9 @@
 ﻿using CommonLib.DTOs;
 using CommonLib.Models;
-using DataLib.Repository;
 using CommonLib.RequestBody;
+using DataLib.Repository;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
-
 
 namespace CommonLib.Services
 {
@@ -57,8 +56,23 @@ namespace CommonLib.Services
                     await _cache.SetStringAsync(key, JsonSerializer.Serialize(merchant, _jsonOptions), _cacheOptions);
                 }
             }
-
-            return merchant != null ? BuildDTO(merchant, includeGroup: true, includeBranches: false) : null;
+                return new MerchantDTO
+                {
+                    Id = merchant.Id,
+                    Name = merchant.Name,
+                    ManagerName = merchant.ManagerName,
+                    BusinessType = merchant.BusinessType,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow,
+                    Status = merchant.Status,
+                    MerchantsGroup = new MerchantGroupDto
+                    {
+                        Id = merchant.MerchantsGroup.Id,
+                        Name = merchant.MerchantsGroup.Name,
+                        CreatedAt = merchant.MerchantsGroup.CreatedAt,
+                        UpdatedAt = merchant.MerchantsGroup.UpdatedAt,
+                    }
+                };   
         }
 
         public async Task<List<MerchantDTO>> GetAllAsync()
@@ -76,7 +90,16 @@ namespace CommonLib.Services
                 await _cache.SetStringAsync(AllMerchantsKey, JsonSerializer.Serialize(merchants, _jsonOptions), _cacheOptions);
             }
 
-            return merchants.Select(m => BuildDTO(m, includeGroup: false, includeBranches: false)).ToList();
+            return merchants.Select(merchant => new MerchantDTO
+            {  
+                Id = merchant.Id,
+                Name = merchant.Name,
+                ManagerName = merchant.ManagerName,
+                BusinessType = merchant.BusinessType,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                Status = merchant.Status,
+            }).ToList();
         }
 
         public async Task<List<MerchantDTO>> GetMerchantsByGroupIdAsync(long groupId)
@@ -95,7 +118,23 @@ namespace CommonLib.Services
                 await _cache.SetStringAsync(key, JsonSerializer.Serialize(merchants, _jsonOptions), _cacheOptions);
             }
 
-            return merchants.Select(m => BuildDTO(m, includeGroup: true, includeBranches: false)).ToList();
+            return merchants.Select(merchant => new MerchantDTO
+            {
+                Id = merchant.Id,
+                Name = merchant.Name,
+                ManagerName = merchant.ManagerName,
+                BusinessType = merchant.BusinessType,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                Status = merchant.Status,
+                MerchantsGroup = new MerchantGroupDto
+                {
+                    Id = merchant.MerchantsGroup.Id,
+                    Name = merchant.MerchantsGroup.Name,
+                    CreatedAt = merchant.MerchantsGroup.CreatedAt,
+                    UpdatedAt = merchant.MerchantsGroup.UpdatedAt,
+                }
+            }).ToList();
         }
 
         public async Task<MerchantDTO?> AddMerchant(MerchantRequest request, long groupId)
@@ -120,7 +159,16 @@ namespace CommonLib.Services
             _cache.Remove(ByGroupKeyPrefix + groupId);
             _cache.Remove("groups:id:" + groupId);
 
-            return BuildDTO(merchant, includeGroup: false, includeBranches: false);
+            return new MerchantDTO
+            {
+                Id = merchant.Id,
+                Name = merchant.Name,
+                ManagerName = merchant.ManagerName,
+                BusinessType = merchant.BusinessType,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                Status = merchant.Status,
+            };
         }
 
         public async Task<MerchantDTO?> UpdateMerchant(long merchantId, MerchantRequest request)
@@ -140,7 +188,16 @@ namespace CommonLib.Services
             _cache.Remove(AllMerchantsKey);
             _cache.Remove("groups:id:" + merchant.MerchantsGroup.Id);
 
-            return BuildDTO(merchant, includeGroup: false, includeBranches: false);
+            return new MerchantDTO
+            {
+                Id = merchant.Id,
+                Name = merchant.Name,
+                ManagerName = merchant.ManagerName,
+                BusinessType = merchant.BusinessType,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                Status = merchant.Status,
+            };
         }
 
         public async Task<MerchantDTO?> ChangeMerchantGroup(long merchantId, long newGroupId)
@@ -151,64 +208,66 @@ namespace CommonLib.Services
             if (merchant == null || newGroup == null) return null;
 
             merchant.MerchantsGroup = newGroup;
-
             merchant = await _merchantRepo.UpdateMerchantAsync(merchant);
 
             _cache.Remove("groups:id:" + merchant.MerchantsGroup.Id);
             _cache.Remove("groups:id:" + newGroupId);
 
-            return BuildDTO(merchant, includeGroup: true, includeBranches: false);
+            return new MerchantDTO
+            {
+                Id = merchant.Id,
+                Name = merchant.Name,
+                ManagerName = merchant.ManagerName,
+                BusinessType = merchant.BusinessType,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                Status = merchant.Status,
+            };
         }
 
         public async Task<MerchantDTO?> GetMerchantWithMainBranch(long merchantId)
         {
             var merchant = await _merchantRepo.GetMerchantWithMainBranch(merchantId);
-            return merchant != null ? BuildDTO(merchant, includeGroup: false, includeBranches: true) : null;
+            return merchant != null ? new MerchantDTO
+            {
+                Id = merchant.Id,
+                Name = merchant.Name,
+                ManagerName = merchant.ManagerName,
+                BusinessType = merchant.BusinessType,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                Status = merchant.Status,
+                MerchantBranches = merchant.MerchantBranches.Select(branch => new MerchantBranchDto{
+                    Id = branch.Id,
+                    BranchName = branch.BranchName,
+                    Status = branch.Status,
+                    IsMainBranch = branch.IsMainBranch,
+                    Address = branch.Address,
+                    Mobile = branch.Mobile,
+                    Phone = branch.Phone,
+                }).ToList()
+            } : null;
         }
 
         public async Task<List<MerchantDTO>> SearchMerchants(SearchRequest request)
         {
             var merchants = await _merchantRepo.SearchMerchants(request);
-            return merchants.Select(m => BuildDTO(m, includeGroup: false, includeBranches: false)).ToList();
-        }
-
-        public async Task<List<MerchantDTO>> SearchMerchantsWithBranches(SearchRequest request)
-        {
-            var merchants = await _merchantRepo.SearchMerchantsWithBranches(request);
-            return merchants.Select(m => BuildDTO(m, includeGroup: false, includeBranches: true)).ToList();
-        }
-
-        private MerchantDTO BuildDTO(Merchants merchant, bool includeGroup, bool includeBranches)
-        {
-            var builder = new MerchantDTO.Builder()
-                .WithId(merchant.Id)
-                .WithName(merchant.Name)
-                .WithBusinessType(merchant.BusinessType)
-                .WithStatus(merchant.Status)
-                .WithDeletedAt(merchant.DeletedAt)
-                .WithCreatedAt(merchant.CreatedAt)
-                .WithUpdatedAt(merchant.UpdatedAt)
-                .WithManagerName(merchant.ManagerName);
-
-            if (includeGroup && merchant.MerchantsGroup != null)
+            return merchants.Select(merchant => new MerchantDTO
             {
-                builder.WithMerchantsGroup(new MerchantGroupDto.Builder()
-                    .WithId(merchant.MerchantsGroup.Id)
-                    .WithName(merchant.MerchantsGroup.Name)
-                    .Build());
-            }
-
-            // Optional: if you want to add back branch support later
-            // if (includeBranches && merchant.MerchantBranches != null)
-            // {
-            //     builder.WithMerchantBranches(merchant.MerchantBranches.Select(branch => new MerchantBranchDto.Builder()
-            //         .WithId(branch.Id)
-            //         .WithName(branch.BranchName)
-            //         .WithStatus(branch.Status)
-            //         .Build()).ToList());
-            // }
-
-            return builder.Build();
+                Id = merchant.Id,
+                Name = merchant.Name,
+                ManagerName = merchant.ManagerName,
+                BusinessType = merchant.BusinessType,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow,
+                Status = merchant.Status,
+            }).ToList();
         }
+
+        //public async Task<List<MerchantDTO>> SearchMerchantsWithBranches(SearchRequest request)
+        //{
+        //    var merchants = await _merchantRepo.SearchMerchantsWithBranches(request);
+        //    return merchants.Select(m => BuildDTO(m, includeGroup: false, includeBranches: true)).ToList();
+        //}
     }
 }

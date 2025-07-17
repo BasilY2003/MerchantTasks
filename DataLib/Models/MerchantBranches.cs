@@ -9,9 +9,9 @@ namespace CommonLib.Models
 
         public virtual long Id { get; set; } 
 
-        public virtual string BranchName { get; set; }
+        public virtual string BranchName { get; set; } = string.Empty;
 
-        public virtual Merchants Merchant { get; set; }
+        public required virtual Merchants Merchant { get; set; }
 
         public virtual long ContactPersonId { get; set; }
 
@@ -21,7 +21,7 @@ namespace CommonLib.Models
 
         public virtual string? AlHai {  get; set; }
 
-        public virtual string Address { get; set; }
+        public virtual string Address { get; set; } = string.Empty;
 
         public virtual int Region { get; set; }
 
@@ -29,9 +29,9 @@ namespace CommonLib.Models
 
         public virtual string? Website { get; set; }
 
-        public virtual string Mobile { get; set; }
+        public virtual string Mobile { get; set; } = string.Empty;
 
-        public virtual string Phone { get; set; }
+        public virtual string Phone { get; set; } = string.Empty; 
 
         public virtual string? Gps { get; set; }
 

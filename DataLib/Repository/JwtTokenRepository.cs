@@ -41,8 +41,5 @@ namespace DataLib.Repository
             await _session.SaveOrUpdateAsync(jwtToken);
             await _session.FlushAsync();
         }
-
-
-
     }
 }

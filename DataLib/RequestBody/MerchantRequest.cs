@@ -10,7 +10,7 @@ namespace CommonLib.RequestBody
         [StringLength(50,
             ErrorMessageResourceType = typeof(SharedResource),
             ErrorMessageResourceName = "StringLength")]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         [Required(
             ErrorMessageResourceType = typeof(SharedResource),
@@ -28,6 +28,6 @@ namespace CommonLib.RequestBody
         [StringLength(50,
             ErrorMessageResourceType = typeof(SharedResource),
             ErrorMessageResourceName = "StringLength")]
-        public string ManagerName { get; set; }
+        public string ManagerName { get; set; } = String.Empty;
     }
 }
