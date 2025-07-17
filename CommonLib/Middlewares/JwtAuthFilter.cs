@@ -21,7 +21,7 @@ namespace CommonLib.Middlewares
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             var token = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
-            var errorMessage = LocalizedErrorHelper.Create(ErrorCode.UnAuthorized, null, "UnAuthorized", Array.Empty<object>());
+            var errorMessage = LocalizedMessage.GetMessage("UnAuthorized");
 
             if (string.IsNullOrEmpty(token))
             {

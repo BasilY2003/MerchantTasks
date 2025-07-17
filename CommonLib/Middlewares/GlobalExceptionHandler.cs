@@ -22,14 +22,19 @@ namespace CommonLib.Middlewares
                 context.HttpContext.Request.Path,
                 context.HttpContext.Request.QueryString);
 
-            var problem = LocalizedErrorHelper.Create(ErrorCode.InternalServerError,ex, "InternalServerError");
-            context.Result = new ObjectResult(problem)
+            var InternalErrorMessage = LocalizedMessage.GetMessage("InternalServerError");
+            var errorMessage = new ErrorResponse
             {
-                StatusCode = (int) problem.ErrorCode
+                ErrorCode = ErrorCode.InternalServerError,
+                ErrorMessage = InternalErrorMessage,
+                Details = ex.Message,
+            };
+            context.Result = new ObjectResult(errorMessage)
+            {
+                StatusCode = (int) errorMessage.ErrorCode
             };
             context.ExceptionHandled = true;
             return Task.CompletedTask;
         }
     }
-
 }

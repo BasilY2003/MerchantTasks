@@ -19,12 +19,17 @@ namespace ApiLib.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] LoginRequest req)
         {
-            
             var success = await _authService.RegisterAsync(req.Email, req.Password);
             if (!success)
             {
-                var message = LocalizedErrorHelper.Create(ErrorCode.TakenUserName, null, "TakenUserName", Array.Empty<Object>());
-                return BadRequest(message);
+                var message = LocalizedMessage.GetMessage("TakenUserName");
+                var error = new ErrorResponse
+                {
+                    ErrorCode = ErrorCode.NotFound,
+                    ErrorMessage = message,
+                    Details = null,
+                };
+                return BadRequest(error);
             }
             return Ok("User registered");
         }
@@ -35,11 +40,16 @@ namespace ApiLib.Controllers
             var token = await _authService.LoginAsync(req.Email, req.Password);
             if (token == null)
             {
-                var messsage = LocalizedErrorHelper.Create(ErrorCode.InvalidRequest,null, "LoginCredentials",Array.Empty<Object>());
-                return Unauthorized(messsage);
+                var message = LocalizedMessage.GetMessage("LoginCredentials");
+                var error = new ErrorResponse
+                {
+                    ErrorCode = ErrorCode.NotFound,
+                    ErrorMessage = message,
+                    Details = null,
+                };
+                return Unauthorized(error);
             }
             return Ok(new { token });
         }
     }
-
 }

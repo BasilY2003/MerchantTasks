@@ -26,7 +26,13 @@ namespace ApiLib.Controllers
 
             if (group == null)
             {
-                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, null, "NotFound", "Group", id);
+                var errorMessage = LocalizedMessage.GetMessage("NotFound", "Group", id);
+                var error = new ErrorResponse
+                {
+                    ErrorCode = ErrorCode.NotFound,
+                    ErrorMessage = errorMessage,
+                    Details = null,
+                };
                 return NotFound(error);
             }
             return Ok(group);
@@ -59,7 +65,13 @@ namespace ApiLib.Controllers
             var updated = await _service.UpdateGroupAsync(request, id);
             if (updated == null)
             {
-                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, null, "NotFound", "Group", id);
+                var errorMessage = LocalizedMessage.GetMessage("NotFound", "Group", id);
+                var error = new ErrorResponse
+                {
+                    ErrorCode = ErrorCode.NotFound,
+                    ErrorMessage = errorMessage,
+                    Details = null,
+                };
                 return NotFound(error);
             }
             return Ok(updated);
@@ -69,9 +81,15 @@ namespace ApiLib.Controllers
         public async Task<IActionResult> DeleteGroup(long id)
         {
             var deleted = await _service.DeleteGroupAsync(id);
-            if (!deleted) { 
-                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, null, "NotFound", "Group", id);
-            return NotFound(error); }
+            if (!deleted) {
+                var errorMessage = LocalizedMessage.GetMessage("NotFound", "Group", id);
+                var error = new ErrorResponse
+                {
+                    ErrorCode = ErrorCode.NotFound,
+                    ErrorMessage = errorMessage,
+                    Details = null,
+                };
+                return NotFound(error); }
 
             return Ok();
         }

@@ -55,7 +55,7 @@ var app = builder.Build();
 app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);
 
 var localizer = app.Services.GetRequiredService<IStringLocalizer<SharedResource>>();
-LocalizedErrorHelper.Configure(localizer);
+LocalizedMessage.Configure(localizer);
 
 app.UseSwagger();
 app.UseSwaggerUI();

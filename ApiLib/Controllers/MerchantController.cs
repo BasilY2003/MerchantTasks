@@ -27,7 +27,13 @@ namespace ApiLib.Controllers
             var merchant = await _merchantService.GetByIdWithGroupAsync(id);
             if (merchant == null)
             {
-                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, null, "NotFound", "Merchant", id);
+                var errorMessage = LocalizedMessage.GetMessage("NotFound", "Merchant", id);
+                var error = new ErrorResponse
+                {
+                    ErrorCode = ErrorCode.NotFound,
+                    ErrorMessage = errorMessage,
+                    Details = null,
+                };
                 return NotFound(error);
             }
             return Ok(merchant);
@@ -47,7 +53,13 @@ namespace ApiLib.Controllers
 
             if (merchants == null)
             {
-                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, null, "NotFound", "Group", groupId);
+                var errorMessage = LocalizedMessage.GetMessage("NotFound", "Group", groupId);
+                var error = new ErrorResponse
+                {
+                    ErrorCode = ErrorCode.NotFound,
+                    ErrorMessage = errorMessage,
+                    Details = null,
+                };
                 return NotFound(error);
             }
             return Ok(merchants);
@@ -59,7 +71,13 @@ namespace ApiLib.Controllers
             var updatedMerchant = _merchantService.ChangeMerchantGroup(merchantId, newGroupId);
             if (updatedMerchant == null)
             {
-                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, null, "NotFound", "Merchant", merchantId);
+                var errorMessage = LocalizedMessage.GetMessage("NotFound", "Merchant", merchantId);
+                var error = new ErrorResponse
+                {
+                    ErrorCode = ErrorCode.NotFound,
+                    ErrorMessage = errorMessage,
+                    Details = null,
+                };
                 return NotFound(error);
             }
             return Ok(updatedMerchant);
@@ -73,7 +91,7 @@ namespace ApiLib.Controllers
             var merchant = await _merchantService.AddMerchant(request, groupId);
             if (merchant == null)
             {
-                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, null, "NotFound", "Group", groupId);
+                var error = LocalizedMessage.GetMessage("NotFound", "Group", groupId);
                 return NotFound(error);
             }
             return CreatedAtAction(nameof(GetByIdWithBranches), new { id = merchant.Id }, merchant);
@@ -87,7 +105,13 @@ namespace ApiLib.Controllers
             var updated = await _merchantService.UpdateMerchant(merchantId, request);
             if (updated == null)
             {
-                var error = LocalizedErrorHelper.Create(ErrorCode.NotFound, null, "NotFound", "Merchant", merchantId);
+                var errorMessage = LocalizedMessage.GetMessage("NotFound", "Merchant", merchantId);
+                var error = new ErrorResponse
+                {
+                    ErrorCode = ErrorCode.NotFound,
+                    ErrorMessage = errorMessage,
+                    Details = null,
+                };
                 return NotFound(error);
             }
             return Ok(updated);
