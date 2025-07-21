@@ -141,9 +141,5 @@ namespace DataLib.Repository
 
             return await query.Fetch(m => m.MerchantBranches).ToListAsync().ConfigureAwait(false);
         }
-
-
-
-
     }
 }

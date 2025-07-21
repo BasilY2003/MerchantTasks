@@ -21,8 +21,7 @@ namespace DataLib
              .FromAssemblyOf<MerchantRepository>()
              .AddClasses(classes => classes.InNamespaces("DataLib.Repository"))
              .AsSelf()
-             .WithScopedLifetime()
-         );
+             .WithScopedLifetime());
 
             return services;
         }

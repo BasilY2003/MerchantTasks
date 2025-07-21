@@ -127,6 +127,7 @@ namespace ApiLib.Controllers
             return Ok(merchant);
         }
 
+        // POST body
         [HttpGet("search")]
         public async Task<ActionResult<List<MerchantDTO>>> Search([FromQuery] SearchRequest request)
         {

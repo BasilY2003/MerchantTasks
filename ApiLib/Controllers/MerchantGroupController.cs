@@ -3,6 +3,7 @@ using CommonLib.Middlewares;
 using CommonLib.RequestBody;
 using Microsoft.AspNetCore.Mvc;
 using CommonLib.Services;
+using CommonLib.Pdf;
 
 
 namespace ApiLib.Controllers
@@ -13,10 +14,12 @@ namespace ApiLib.Controllers
     public class MerchantGroupController : ControllerBase
     {
         private readonly MerchantGroupService _service;
+        private readonly PdfGenerator _pdfGenerator;
 
-        public MerchantGroupController(MerchantGroupService service)
+        public MerchantGroupController(MerchantGroupService service,PdfGenerator pdfGenerator)
         {
             _service = service;
+            _pdfGenerator = pdfGenerator;
         }
 
         [HttpGet("{id}")]
@@ -37,6 +40,28 @@ namespace ApiLib.Controllers
             }
             return Ok(group);
         }
+
+        [HttpGet("{id}/pdf")]
+        public async Task<IActionResult> GenerateGroupPdf(long id)
+        {
+            var group = await _service.GetGroupWithMerchantsById(id);
+
+            if (group == null)
+            {
+                var errorMessage = LocalizedMessage.GetMessage("NotFound", "Group", id);
+                var error = new ErrorResponse
+                {
+                    ErrorCode = ErrorCode.NotFound,
+                    ErrorMessage = errorMessage,
+                    Details = null,
+                };
+                return NotFound(error);
+            }
+                _pdfGenerator.GeneratePdf(group);
+            return Ok();
+        }
+
+
 
         [HttpGet("ex")]
         public IActionResult GetException()

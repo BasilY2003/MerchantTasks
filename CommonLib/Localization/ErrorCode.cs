@@ -6,6 +6,7 @@
         InvalidRequest = 400,
         InternalServerError = 500,  
         UnAuthorized = 401,
-        TakenUserName = 409
+        TakenUserName = 409,
+        TokenExpired = 401,
     }
 }

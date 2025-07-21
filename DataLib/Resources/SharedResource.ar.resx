@@ -135,6 +135,9 @@
   <data name="TakenUserName" xml:space="preserve">
     <value>الرجاء اختيار اسم مستخدم اخر.</value>
   </data>
+  <data name="TokenExpired" xml:space="preserve">
+    <value>الرجاء تسجيل الدخول من جديد.</value>
+  </data>
   <data name="UnAuthorized" xml:space="preserve">
     <value>انت غير مرخص لدخول البرنامج</value>
   </data>

@@ -9,7 +9,6 @@ using Microsoft.Extensions.Options;
 using Serilog;
 using System.Globalization;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDataLib(builder.Configuration);

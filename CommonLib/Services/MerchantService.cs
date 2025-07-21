@@ -252,6 +252,7 @@ namespace CommonLib.Services
         public async Task<List<MerchantDTO>> SearchMerchants(SearchRequest request)
         {
             var merchants = await _merchantRepo.SearchMerchants(request);
+            
             return merchants.Select(merchant => new MerchantDTO
             {
                 Id = merchant.Id,

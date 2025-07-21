@@ -65,6 +65,7 @@ namespace CommonLib.Services
                     Name = merchant.Name,
                     BusinessType = merchant.BusinessType,
                     Status = merchant.Status,
+                    ManagerName = merchant.ManagerName,
 
                 }).ToList()
             }; 

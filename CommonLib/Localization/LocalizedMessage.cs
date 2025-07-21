@@ -1,7 +1,6 @@
 ﻿using DataLib.Resources;
 using Microsoft.Extensions.Localization;
 
-
 namespace CommonLib.Localization
 {
     public static class LocalizedMessage

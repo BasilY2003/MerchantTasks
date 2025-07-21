@@ -57,11 +57,7 @@ namespace CommonLib.Services
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
                 }, out _);
-
                 return principal;
             }
-           
-        
-
     }
 }

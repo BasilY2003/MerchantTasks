@@ -136,6 +136,9 @@ Please check customer support</value>
   <data name="TakenUserName" xml:space="preserve">
     <value>Username already taken please change it</value>
   </data>
+  <data name="TokenExpired" xml:space="preserve">
+    <value>Token is expired, Please login again.</value>
+  </data>
   <data name="UnAuthorized" xml:space="preserve">
     <value>You are Unauthorized.</value>
   </data>

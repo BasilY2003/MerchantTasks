@@ -116,6 +116,15 @@ namespace DataLib.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Token is expired, Please login again..
+        /// </summary>
+        public static string TokenExpired {
+            get {
+                return ResourceManager.GetString("TokenExpired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to You are Unauthorized..
         /// </summary>
         public static string UnAuthorized {
