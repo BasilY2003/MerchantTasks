@@ -61,6 +61,15 @@ namespace DataLib.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please enter the details correctly .
+        /// </summary>
+        public static string BadRequest {
+            get {
+                return ResourceManager.GetString("BadRequest", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Server Error!!
         ///Please check customer support.
         /// </summary>

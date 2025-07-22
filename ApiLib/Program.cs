@@ -4,6 +4,7 @@ using CommonLib.Middlewares;
 using DataLib;
 using DataLib.Resources;
 using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
 using Serilog;
@@ -49,6 +50,29 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.SupportedCultures = supportedCultures;
     options.SupportedUICultures = supportedCultures;
 });
+
+builder.Services.Configure<ApiBehaviorOptions>(options =>
+{
+options.InvalidModelStateResponseFactory = context =>
+{
+    var errors = context.ModelState
+        .Where(ms => ms.Value?.Errors.Count > 0)
+        .Select(ms => new
+        {
+            Field = ms.Key,
+            Messages = ms.Value!.Errors.Select(e => e.ErrorMessage).ToArray()
+        }).ToList();
+
+    var errorResponse = new ErrorResponse
+    {
+        ErrorCode = ErrorCode.InvalidRequest,
+        ErrorMessage = LocalizedMessage.GetMessage("ValidationFailed"), // e.g. "Validation failed"
+        Details = errors
+    };
+    return new BadRequestObjectResult(errorResponse);
+};
+});
+
 
 var app = builder.Build();
 app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocalizationOptions>>().Value);

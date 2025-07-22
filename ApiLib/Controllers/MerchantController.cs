@@ -1,18 +1,17 @@
 ﻿using CommonLib.DTOs;
 using CommonLib.Localization;
 using CommonLib.Middlewares;
+using CommonLib.Models;
 using CommonLib.RequestBody;
 using CommonLib.Services;
-using DataLib.Resources;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Localization;
 
 namespace ApiLib.Controllers
 {
     [ApiController]
     [Route("api/merchants")]
     [ServiceFilter(typeof(JwtAuthFilter))]
-    public class MerchantController : ControllerBase
+    public class MerchantController : BaseController
     {
         private readonly MerchantService _merchantService;
 
@@ -27,14 +26,7 @@ namespace ApiLib.Controllers
             var merchant = await _merchantService.GetByIdWithGroupAsync(id);
             if (merchant == null)
             {
-                var errorMessage = LocalizedMessage.GetMessage("NotFound", "Merchant", id);
-                var error = new ErrorResponse
-                {
-                    ErrorCode = ErrorCode.NotFound,
-                    ErrorMessage = errorMessage,
-                    Details = null,
-                };
-                return NotFound(error);
+                NotFoundResponse("merchant",id);
             }
             return Ok(merchant);
         }
@@ -53,14 +45,7 @@ namespace ApiLib.Controllers
 
             if (merchants == null)
             {
-                var errorMessage = LocalizedMessage.GetMessage("NotFound", "Group", groupId);
-                var error = new ErrorResponse
-                {
-                    ErrorCode = ErrorCode.NotFound,
-                    ErrorMessage = errorMessage,
-                    Details = null,
-                };
-                return NotFound(error);
+                NotFoundResponse("Group", groupId);
             }
             return Ok(merchants);
         }
@@ -71,14 +56,7 @@ namespace ApiLib.Controllers
             var updatedMerchant = _merchantService.ChangeMerchantGroup(merchantId, newGroupId);
             if (updatedMerchant == null)
             {
-                var errorMessage = LocalizedMessage.GetMessage("NotFound", "Merchant", merchantId);
-                var error = new ErrorResponse
-                {
-                    ErrorCode = ErrorCode.NotFound,
-                    ErrorMessage = errorMessage,
-                    Details = null,
-                };
-                return NotFound(error);
+                NotFoundResponse("merchant", merchantId);
             }
             return Ok(updatedMerchant);
         }
@@ -91,8 +69,7 @@ namespace ApiLib.Controllers
             var merchant = await _merchantService.AddMerchant(request, groupId);
             if (merchant == null)
             {
-                var error = LocalizedMessage.GetMessage("NotFound", "Group", groupId);
-                return NotFound(error);
+                NotFoundResponse("Group", groupId);
             }
             return CreatedAtAction(nameof(GetByIdWithBranches), new { id = merchant.Id }, merchant);
         }
@@ -105,48 +82,25 @@ namespace ApiLib.Controllers
             var updated = await _merchantService.UpdateMerchant(merchantId, request);
             if (updated == null)
             {
-                var errorMessage = LocalizedMessage.GetMessage("NotFound", "Merchant", merchantId);
-                var error = new ErrorResponse
-                {
-                    ErrorCode = ErrorCode.NotFound,
-                    ErrorMessage = errorMessage,
-                    Details = null,
-                };
-                return NotFound(error);
+                NotFoundResponse("merchant", merchantId);
             }
             return Ok(updated);
         }
-
     
         [HttpGet("{merchantId}/main-branch")]
         public async Task<ActionResult<MerchantDTO>> GetMerchantWithMainBranch(long merchantId)
         {
             var merchant = await _merchantService.GetMerchantWithMainBranch(merchantId);
             
-            if (merchant == null) return NotFound("Merchant with main branch not found.");
+            if (merchant == null) return NotFoundResponse("merchant", merchantId);
             return Ok(merchant);
         }
 
-        // POST body
         [HttpGet("search")]
         public async Task<ActionResult<List<MerchantDTO>>> Search([FromQuery] SearchRequest request)
         {
             var merchants = await _merchantService.SearchMerchants(request);
             return Ok(merchants);
-        }
-
-        //[HttpPost("search-with-branches")]
-        //public async Task<ActionResult<List<MerchantDTO>>> SearchWithBranches([FromBody] SearchRequest request)
-        //{
-        //    var merchants = await _merchantService.SearchMerchantsWithBranches(request);
-        //    return Ok(merchants);
-        //}
-
-
-        [HttpGet("test-locale")]
-        public string Test([FromServices] IStringLocalizer<SharedResource> localizer)
-        {
-            return localizer["Required", "Name"];
         }
     }
 }

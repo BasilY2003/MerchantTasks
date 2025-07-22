@@ -1,7 +1,6 @@
 ﻿using DataLib.Resources;
 using System.ComponentModel.DataAnnotations;
 
-
 namespace CommonLib.RequestBody
 {
     public class MerchantGroupRequest
@@ -14,6 +13,6 @@ namespace CommonLib.RequestBody
             ErrorMessageResourceType = typeof(SharedResource),
             ErrorMessageResourceName = "StringLength")]
         public string Name { get; set; } = string.Empty;
-    
+  
     }
 }

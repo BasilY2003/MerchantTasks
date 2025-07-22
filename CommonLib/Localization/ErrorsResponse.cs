@@ -1,9 +1,9 @@
 ﻿namespace CommonLib.Localization
 {
-    public class ErrorResponse
+    public class ErrorsResponse
     {
         public ErrorCode ErrorCode { get; set; }
         public string ErrorMessage { get; set; } = string.Empty;
-        public object? Details { get; set; }
+        public List<string>? Details { get; set; }
     }
 }
