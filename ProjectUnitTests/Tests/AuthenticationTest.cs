@@ -9,13 +9,13 @@ namespace ProjectUnitTests.Tests
 {
     public class AuthenticationTest
     {
-            private readonly Mock<IUserRepository> _userRepoMock;
-            private readonly Mock<IJwtTokenRepository> _tokenRepoMock;
-            private readonly Mock<IJwtService> _jwtServiceMock;
-            private readonly Mock<IPasswordHasher> _PasswordHasherMock;
-            private readonly IAuthenticationService _authService;
+           private readonly Mock<IUserRepository> _userRepoMock;
+           private readonly Mock<IJwtTokenRepository> _tokenRepoMock;
+           private readonly Mock<IJwtService> _jwtServiceMock;
+           private readonly Mock<IPasswordHasher> _PasswordHasherMock;
+           private readonly IAuthenticationService _authService;
 
-            public AuthenticationTest()
+           public AuthenticationTest()
             {
                 _userRepoMock = new Mock<IUserRepository>();
                 _tokenRepoMock = new Mock<IJwtTokenRepository>();
@@ -39,7 +39,6 @@ namespace ProjectUnitTests.Tests
             var result = await _authService.LoginAsync("Basil", "12345678");
             Assert.Null(result);
         }
-
 
         [Fact]
         public async Task LoginAsync_ShouldReturnToken_WhenFound()
@@ -70,6 +69,38 @@ namespace ProjectUnitTests.Tests
             Assert.NotNull(result);
         }
 
+        [Fact]
+        public async Task RegisterAsync_ShouldReturnTrue_WhenUsernameIsAvailable()
+        {
+            // Arrange
+            var username = "basil";
+            var password = "password123";
+            var hashedPassword = "hashedPassword123";
 
+            _userRepoMock.Setup(r => r.UsernameExistsAsync(username)).ReturnsAsync(false);
+            _PasswordHasherMock.Setup(h => h.HashPassword(password)).Returns(hashedPassword);
+            _userRepoMock.Setup(r => r.SaveAsync(It.IsAny<User>())).Returns(Task.CompletedTask);
+
+            var result = await _authService.RegisterAsync(username, password);
+
+            Assert.True(result);
+            _userRepoMock.Verify(r => r.SaveAsync(It.Is<User>(u =>
+                u.Username == username && u.PasswordHash == hashedPassword
+            )), Times.Once);
+        }
+
+        [Fact]
+        public async Task RegisterAsync_ShouldReturnFalse_WhenUsernameExists()
+        {
+            var username = "basil";
+            var password = "password123";
+
+            _userRepoMock.Setup(r => r.UsernameExistsAsync(username)).ReturnsAsync(true);
+
+            var result = await _authService.RegisterAsync(username, password);
+
+            Assert.False(result);
+            _userRepoMock.Verify(r => r.SaveAsync(It.IsAny<User>()), Times.Never);
+        }
     }
 }
