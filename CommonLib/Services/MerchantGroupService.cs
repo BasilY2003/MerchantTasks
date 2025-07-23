@@ -42,7 +42,6 @@ namespace CommonLib.Services
             var cached = await _cache.GetStringAsync(cacheKey);
             if (!string.IsNullOrEmpty(cached))
             {
-                Console.WriteLine($"Cache HIT for Group Entity By ID {id}");
                 group = JsonSerializer.Deserialize<MerchantsGroups>(cached, _jsonOptions);
             }
             else

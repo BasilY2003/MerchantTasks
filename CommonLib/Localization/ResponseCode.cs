@@ -7,5 +7,6 @@
         InternalServerError = 500,  
         UnAuthorized = 401,
         Confict = 409,
+        Success = 200,
     }
 }

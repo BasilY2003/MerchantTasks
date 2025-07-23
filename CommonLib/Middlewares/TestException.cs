@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace CommonLib.Middlewares
+﻿namespace CommonLib.Middlewares
 {
     public class TestException : Exception
     {

@@ -102,11 +102,5 @@ namespace ProjectUnitTests.Tests
             Assert.False(result);
             _userRepoMock.Verify(r => r.SaveAsync(It.IsAny<User>()), Times.Never);
         }
-    
-    
-    
-    
-    
-    
     }
 }
