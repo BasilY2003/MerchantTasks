@@ -1,4 +1,5 @@
-﻿using DataLib.Models;
+﻿using CommonLib.Interfaces;
+using DataLib.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -7,7 +8,7 @@ using System.Text;
 
 namespace CommonLib.Services
 {
-    public class JwtService
+    public class JwtService : IJwtService
     {
         private readonly string _secret;
         private readonly string _issuer;

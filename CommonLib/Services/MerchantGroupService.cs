@@ -3,16 +3,18 @@ using CommonLib.Models;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
 using CommonLib.RequestBody;
-using DataLib.Repository;
+using DataLib.Interfaces;
+using CommonLib.Interfaces;
 
 namespace CommonLib.Services
 {
-    public class MerchantGroupService
+    public class MerchantGroupService : IMerchantGroupService
     {
         private const string AllKeyPrefix = "groups:all";
         private const string ByIdKeyPrefix = "groups:id:";
 
-        private readonly MerchantGroupRepository _repository;
+        private readonly IMerchantGroupRepository _repository;
+        
         private readonly IDistributedCache _cache;
         private readonly DistributedCacheEntryOptions _cacheOptions;
 
@@ -22,7 +24,7 @@ namespace CommonLib.Services
             ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles
         };
 
-        public MerchantGroupService(MerchantGroupRepository repository, IDistributedCache cache)
+        public MerchantGroupService(IMerchantGroupRepository repository, IDistributedCache cache)
         {
             _repository = repository;
             _cache = cache;
@@ -32,7 +34,7 @@ namespace CommonLib.Services
             };
         }
 
-        public async Task<MerchantGroupDto> GetGroupWithMerchantsById(long id)
+        public async Task<MerchantGroupDto?> GetGroupWithMerchantsById(long id)
         {
             var cacheKey = ByIdKeyPrefix + id;
             MerchantsGroups? group = null;

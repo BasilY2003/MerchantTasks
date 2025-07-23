@@ -1,11 +1,12 @@
 ﻿using CommonLib.Models;
 using CommonLib.RequestBody;
+using DataLib.Interfaces;
 using NHibernate;
 using NHibernate.Linq;
 
 namespace DataLib.Repository
 {
-    public class MerchantRepository
+    public class MerchantRepository : IMerchantRepository
     {
         private readonly ISession _session;
 
@@ -80,7 +81,7 @@ namespace DataLib.Repository
                 .ConfigureAwait(false);
         }
 
-        public async Task<Merchants>? GetMerchantWithMainBranchTEST(long merchantId)
+        public async Task<Merchants?> GetMerchantWithMainBranchTEST(long merchantId)
         {
             var result = await _session.Query<Merchants>()
        .Join(

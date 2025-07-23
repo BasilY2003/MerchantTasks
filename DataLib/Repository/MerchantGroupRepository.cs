@@ -1,11 +1,11 @@
 ﻿using CommonLib.Models;
-using CommonLib.RequestBody;
+using DataLib.Interfaces;
 using NHibernate;
 using NHibernate.Linq;
 
 namespace DataLib.Repository
 {
-    public class MerchantGroupRepository
+    public class MerchantGroupRepository : IMerchantGroupRepository
     {
         private readonly ISession _session;
 

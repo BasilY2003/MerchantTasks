@@ -1,10 +1,11 @@
-﻿using DataLib.Models;
+﻿using DataLib.Interfaces;
+using DataLib.Models;
 using NHibernate;
 using NHibernate.Linq;
 
 namespace DataLib.Repository
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
         private readonly ISession _session;
 

@@ -135,6 +135,9 @@
   <data name="StringLength" xml:space="preserve">
     <value>حقل {0} يجب أن لا يزيد عن {1} حرفًا</value>
   </data>
+  <data name="Success" xml:space="preserve">
+    <value>تم انجاز هذه العملية بنجاح</value>
+  </data>
   <data name="TakenUserName" xml:space="preserve">
     <value>الرجاء اختيار اسم مستخدم اخر.</value>
   </data>

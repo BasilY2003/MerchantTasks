@@ -1,12 +1,13 @@
 ﻿
 using CommonLib.Models;
 using CommonLib.RequestBody;
+using DataLib.Interfaces;
 using NHibernate;
 using NHibernate.Linq;
 
 namespace DataLib.Repository
 {
-    public class BranchRepository
+    public class BranchRepository : IBranchRepository
     {
         private readonly ISession _session;
 

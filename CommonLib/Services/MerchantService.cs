@@ -1,20 +1,23 @@
 ﻿using CommonLib.DTOs;
+using CommonLib.Interfaces;
 using CommonLib.Models;
 using CommonLib.RequestBody;
+using DataLib.Interfaces;
 using DataLib.Repository;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Text.Json;
 
 namespace CommonLib.Services
 {
-    public class MerchantService
+    public class MerchantService : IMerchantService
     {
         private const string AllMerchantsKey = "merchants:all";
         private const string MerchantByIdPrefix = "merchants:id:";
         private const string ByGroupKeyPrefix = "merchants:group:";
 
-        private readonly MerchantRepository _merchantRepo;
-        private readonly MerchantGroupRepository _groupRepo;
+        private readonly IMerchantRepository _merchantRepo;
+        private readonly IMerchantGroupRepository _groupRepo;
+      
         private readonly IDistributedCache _cache;
         private readonly DistributedCacheEntryOptions _cacheOptions;
 
@@ -24,10 +27,9 @@ namespace CommonLib.Services
             ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles
         };
 
-        public MerchantService(MerchantRepository merchantRepo,
-                               MerchantGroupService groupService,
+        public MerchantService(IMerchantRepository merchantRepo,
                                IDistributedCache cache,
-                               MerchantGroupRepository groupRepo)
+                               IMerchantGroupRepository groupRepo)
 {
             _merchantRepo = merchantRepo;
             _cache = cache;
@@ -264,11 +266,5 @@ namespace CommonLib.Services
                 Status = merchant.Status,
             }).ToList();
         }
-
-        //public async Task<List<MerchantDTO>> SearchMerchantsWithBranches(SearchRequest request)
-        //{
-        //    var merchants = await _merchantRepo.SearchMerchantsWithBranches(request);
-        //    return merchants.Select(m => BuildDTO(m, includeGroup: false, includeBranches: true)).ToList();
-        //}
     }
 }

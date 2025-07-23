@@ -25,13 +25,13 @@ namespace CommonLib.Middlewares
             var InternalErrorMessage = LocalizedMessage.GetMessage("InternalServerError");
             var errorMessage = new ErrorResponse
             {
-                ErrorCode = ErrorCode.InternalServerError,
-                ErrorMessage = InternalErrorMessage,
+                StatusCode = ErrorCode.InternalServerError,
+                ResponseMessage = InternalErrorMessage,
                 Details = ex.Message,
             };
             context.Result = new ObjectResult(errorMessage)
             {
-                StatusCode = (int) errorMessage.ErrorCode
+                StatusCode = (int) errorMessage.StatusCode
             };
             context.ExceptionHandled = true;
             return Task.CompletedTask;

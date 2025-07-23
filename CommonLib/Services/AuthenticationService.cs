@@ -1,22 +1,27 @@
-﻿using DataLib.Models;
-using DataLib.Repository;
+﻿using CommonLib.Interfaces;
+using CommonLib.Utils;
+using DataLib.Interfaces;
+using DataLib.Models;
 
 namespace CommonLib.Services
 {
-    public class AuthenticationService 
+    public class AuthenticationService  : IAuthenticationService
     {
-        private readonly UserRepository _userRepo;
-        private readonly JwtTokenRepository _tokenRepo;
-        private readonly JwtService _jwtService;
+        private readonly IUserRepository _userRepo;
+        private readonly IJwtTokenRepository _tokenRepo;
+        private readonly IJwtService _jwtService;
+        private readonly IPasswordHasher _passwordHasher;
 
         public AuthenticationService(
-            UserRepository userRepo,
-            JwtTokenRepository tokenRepo,
-            JwtService jwtService)
+            IUserRepository userRepo,
+            IJwtTokenRepository tokenRepo,
+            IJwtService jwtService,
+            IPasswordHasher passwordHasher)
         {
             _userRepo = userRepo;
             _tokenRepo = tokenRepo;
             _jwtService = jwtService;
+            _passwordHasher = passwordHasher;
         }
 
         public async Task<bool> RegisterAsync(string username, string password)
@@ -27,7 +32,7 @@ namespace CommonLib.Services
             var user = new User
             {
                 Username = username,
-                PasswordHash = PasswordHasher.HashPassword(password)
+                PasswordHash = _passwordHasher.HashPassword(password)
             };
 
             await _userRepo.SaveAsync(user);
@@ -38,7 +43,7 @@ namespace CommonLib.Services
         {
             var user = await _userRepo.GetByUsernameAsync(username);
 
-            if (user == null || !PasswordHasher.VerifyPassword(password, user.PasswordHash))
+            if (user == null || !_passwordHasher.VerifyPassword(password, user.PasswordHash))
                 return null;
 
             var oldToken = await _tokenRepo.GetTokenByUserIdAsync(user.Id);

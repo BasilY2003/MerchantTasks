@@ -1,10 +1,11 @@
-﻿using DataLib.Models;
+﻿using DataLib.Interfaces;
+using DataLib.Models;
 using NHibernate;
 using NHibernate.Linq;
 
 namespace DataLib.Repository
 {
-    public class JwtTokenRepository
+    public class JwtTokenRepository : IJwtTokenRepository
     {
         private readonly ISession _session;
         public JwtTokenRepository(ISession session)

@@ -136,6 +136,9 @@ Please check customer support</value>
   <data name="StringLength" xml:space="preserve">
     <value>The {0} field must be a maximum of {1} characters.</value>
   </data>
+  <data name="Success" xml:space="preserve">
+    <value>You have done this operation successfully.</value>
+  </data>
   <data name="TakenUserName" xml:space="preserve">
     <value>Username already taken please change it</value>
   </data>

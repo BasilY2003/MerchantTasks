@@ -1,15 +1,16 @@
-﻿using CommonLib.Models;
+﻿using CommonLib.Interfaces;
+using CommonLib.Models;
 using CommonLib.RequestBody;
-using DataLib.Repository;
+using DataLib.Interfaces;
 
 namespace CommonLib.Services
 {
-    public class MerchantBranchService
+    public class MerchantBranchService : IMerchantBranchService
     {
-        private readonly BranchRepository _branchRepository;
-        private readonly MerchantRepository _merchantRepository;
+        private readonly IBranchRepository _branchRepository;
+        private readonly IMerchantRepository _merchantRepository;
 
-        public MerchantBranchService( BranchRepository branchRepository,MerchantRepository merchantRepository)
+        public MerchantBranchService(IBranchRepository branchRepository,IMerchantRepository merchantRepository)
         {
             _branchRepository = branchRepository;
             _merchantRepository = merchantRepository;

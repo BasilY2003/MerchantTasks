@@ -116,6 +116,15 @@ namespace DataLib.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to You have done this operation successfully..
+        /// </summary>
+        public static string Success {
+            get {
+                return ResourceManager.GetString("Success", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Username already taken please change it.
         /// </summary>
         public static string TakenUserName {

@@ -1,4 +1,5 @@
-﻿using CommonLib.Localization;
+﻿using CommonLib.Interfaces;
+using CommonLib.Localization;
 using CommonLib.Models;
 using CommonLib.RequestBody;
 using CommonLib.Services;
@@ -10,9 +11,9 @@ namespace ApiLib.Controllers
     [Route("api/[controller]")]
     public class BranchController : ControllerBase
     {
-        private readonly MerchantBranchService _branchService;
+        private readonly IMerchantBranchService _branchService;
 
-        public BranchController(MerchantBranchService branchService)
+        public BranchController(IMerchantBranchService branchService)
         {
             _branchService = branchService;
         }
@@ -34,8 +35,8 @@ namespace ApiLib.Controllers
                var ErrorResponse = new ErrorResponse
                 {
                     Details = null,
-                    ErrorMessage = LocalizedMessage.GetMessage("NotFound", "merchant", merchantId),
-                    ErrorCode = ErrorCode.NotFound,
+                    ResponseMessage = LocalizedMessage.GetMessage("NotFound", "merchant", merchantId),
+                    StatusCode = ErrorCode.NotFound,
                 };
                 return NotFound(ErrorResponse);
             }

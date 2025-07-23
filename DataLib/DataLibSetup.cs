@@ -20,7 +20,7 @@ namespace DataLib
             services.Scan(scan => scan
              .FromAssemblyOf<MerchantRepository>()
              .AddClasses(classes => classes.InNamespaces("DataLib.Repository"))
-             .AsSelf()
+             .AsImplementedInterfaces()
              .WithScopedLifetime());
 
             return services;

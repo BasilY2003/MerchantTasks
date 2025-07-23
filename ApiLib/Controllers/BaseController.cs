@@ -10,19 +10,32 @@
         protected ActionResult NotFoundResponse(string resource, object id) =>
             NotFound(new ErrorResponse
             {
-                ErrorMessage = LocalizedMessage.GetMessage("NotFound", resource, id),
-                ErrorCode = ErrorCode.NotFound
+                ResponseMessage = LocalizedMessage.GetMessage("NotFound", resource, id),
+                StatusCode = ErrorCode.NotFound
             });
 
-        protected ActionResult BadRequestResponse(string message, object? details = null) =>
-            BadRequest(new ErrorResponse
-            {
-                ErrorMessage = LocalizedMessage.GetMessage("BadRequest"),
-                ErrorCode = ErrorCode.InvalidRequest
-            });
+        protected ActionResult AlreadyUsedUsername(string message, object? details = null) =>
+             Conflict(new ErrorResponse
+             {
+                 ResponseMessage = LocalizedMessage.GetMessage("TakenUserName"),
+                 StatusCode = ErrorCode.Confict,
+             });
+
+        protected ActionResult UnauthorizedLoginResponse() =>
+         Unauthorized(new ErrorResponse
+         {
+             ResponseMessage = LocalizedMessage.GetMessage("LoginCredentials"),
+             StatusCode = ErrorCode.InvalidRequest
+         });
+
+        protected ActionResult SuccessResponse() =>
+         Unauthorized(new ErrorResponse
+         {
+             ResponseMessage = LocalizedMessage.GetMessage("Success"),
+             StatusCode = ErrorCode.InvalidRequest
+         });
 
         protected string L(string key, params object[] args) =>
             LocalizedMessage.GetMessage(key, args);
-
     }
 }

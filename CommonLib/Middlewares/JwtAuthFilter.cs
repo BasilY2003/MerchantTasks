@@ -1,6 +1,6 @@
-﻿using CommonLib.Localization;
-using CommonLib.Services;
-using DataLib.Repository;
+﻿using CommonLib.Interfaces;
+using CommonLib.Localization;
+using DataLib.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.IdentityModel.Tokens;
@@ -10,10 +10,10 @@ namespace CommonLib.Middlewares
 {
     public class JwtAuthFilter : IAsyncAuthorizationFilter
     {
-        private readonly JwtService _jwtService;
-        private readonly JwtTokenRepository _tokenRepo;
+        private readonly IJwtService _jwtService;
+        private readonly IJwtTokenRepository _tokenRepo;
 
-        public JwtAuthFilter(JwtService jwtService, JwtTokenRepository tokenRepo)
+        public JwtAuthFilter(IJwtService jwtService,IJwtTokenRepository tokenRepo)
         {
             _jwtService = jwtService;
             _tokenRepo = tokenRepo;
@@ -27,8 +27,8 @@ namespace CommonLib.Middlewares
             var errorResponse = new ErrorResponse
             {
                 Details = null,
-                ErrorMessage = errorMessage,
-                ErrorCode = ErrorCode.UnAuthorized,
+                ResponseMessage = errorMessage,
+                StatusCode = ErrorCode.UnAuthorized,
             };
 
             if (string.IsNullOrEmpty(token))
@@ -48,8 +48,8 @@ namespace CommonLib.Middlewares
 
                 var expiredResponse = new ErrorResponse
                 {
-                    ErrorCode = ErrorCode.TokenExpired,
-                    ErrorMessage = expiredMessage,
+                    StatusCode = ErrorCode.UnAuthorized,
+                    ResponseMessage = expiredMessage,
                     Details = ex.Message
                 };
 
@@ -62,8 +62,8 @@ namespace CommonLib.Middlewares
 
                 var internalError = new ErrorResponse
                 {
-                    ErrorCode = ErrorCode.InternalServerError,
-                    ErrorMessage = internalMessage,
+                    StatusCode = ErrorCode.InternalServerError,
+                    ResponseMessage = internalMessage,
                     Details = ex.Message
                 };
 

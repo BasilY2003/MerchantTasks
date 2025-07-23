@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 
-
 namespace CommonLib.Middlewares
 {
     public class LoggingService 
@@ -20,7 +19,6 @@ namespace CommonLib.Middlewares
             }
         }
 
-
         public void LogError(Exception ex, string message, params object[] args)
         {
             using (Serilog.Context.LogContext.PushProperty("LogType", "Error"))
@@ -28,8 +26,6 @@ namespace CommonLib.Middlewares
                 _logger.LogError(ex, message, args);
             }
         }
-
-
     }
 
 }

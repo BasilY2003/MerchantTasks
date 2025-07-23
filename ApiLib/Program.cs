@@ -28,7 +28,8 @@ Log.Logger = new LoggerConfiguration()
 
 builder.Host.UseSerilog();
 builder.Services.AddLocalization();
-
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers(options =>
 {
@@ -39,9 +40,6 @@ builder.Services.AddControllers(options =>
     options.DataAnnotationLocalizerProvider = (type, factory) =>
         factory.Create(typeof(SharedResource));
 });
-
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 builder.Services.Configure<RequestLocalizationOptions>(options =>
 {
@@ -65,8 +63,8 @@ options.InvalidModelStateResponseFactory = context =>
 
     var errorResponse = new ErrorResponse
     {
-        ErrorCode = ErrorCode.InvalidRequest,
-        ErrorMessage = LocalizedMessage.GetMessage("ValidationFailed"), // e.g. "Validation failed"
+        StatusCode = ErrorCode.InvalidRequest,
+        ResponseMessage = LocalizedMessage.GetMessage("ValidationFailed"), // e.g. "Validation failed"
         Details = errors
     };
     return new BadRequestObjectResult(errorResponse);

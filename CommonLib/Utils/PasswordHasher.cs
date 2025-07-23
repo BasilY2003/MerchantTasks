@@ -1,11 +1,13 @@
-﻿public static class PasswordHasher
+﻿using CommonLib.Utils;
+
+public class PasswordHasher : IPasswordHasher
 {
-    public static string HashPassword(string password)
+    public string HashPassword(string password)
     {
         return BCrypt.Net.BCrypt.HashPassword(password);
     }
 
-    public static bool VerifyPassword(string password, string hash)
+    public bool VerifyPassword(string password, string hash)
     {
         return BCrypt.Net.BCrypt.Verify(password, hash);
     }

@@ -1,4 +1,5 @@
-﻿using CommonLib.Localization;
+﻿using CommonLib.Interfaces;
+using CommonLib.Localization;
 using CommonLib.Middlewares;
 using CommonLib.Models;
 using CommonLib.Pdf;
@@ -14,10 +15,10 @@ namespace ApiLib.Controllers
     [ServiceFilter(typeof(JwtAuthFilter))]
     public class MerchantGroupController : BaseController
     {
-        private readonly MerchantGroupService _service;
+        private readonly IMerchantGroupService _service;
         private readonly PdfGenerator _pdfGenerator;
 
-        public MerchantGroupController(MerchantGroupService service, PdfGenerator pdfGenerator)
+        public MerchantGroupController(IMerchantGroupService service, PdfGenerator pdfGenerator)
         {
             _service = service;
             _pdfGenerator = pdfGenerator;

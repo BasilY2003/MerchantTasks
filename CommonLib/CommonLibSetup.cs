@@ -1,6 +1,8 @@
-﻿using CommonLib.Localization;
+﻿using CommonLib.Interfaces;
 using CommonLib.Middlewares;
 using CommonLib.Pdf;
+using CommonLib.Services;
+using CommonLib.Utils;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,14 +15,13 @@ namespace CommonLib
             services.AddSingleton<LoggingService>();
             services.AddSingleton<PdfGenerator>();
 
-
             services.Scan(scan => scan
-                .FromAssemblyOf<Services.MerchantGroupService>() 
+                .FromAssemblyOf<JwtService>() 
                 .AddClasses(classes => classes.InNamespaces("CommonLib.Services"))
-                .AsSelf()
+                .AsImplementedInterfaces()
                 .WithScopedLifetime()
             );
-
+            services.AddScoped<IPasswordHasher,PasswordHasher>();
             services.AddLocalization();
 
             return services;

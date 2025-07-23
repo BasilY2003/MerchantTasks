@@ -1,9 +1,7 @@
 ﻿using CommonLib.DTOs;
-using CommonLib.Localization;
+using CommonLib.Interfaces;
 using CommonLib.Middlewares;
-using CommonLib.Models;
 using CommonLib.RequestBody;
-using CommonLib.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiLib.Controllers
@@ -13,9 +11,9 @@ namespace ApiLib.Controllers
     [ServiceFilter(typeof(JwtAuthFilter))]
     public class MerchantController : BaseController
     {
-        private readonly MerchantService _merchantService;
+        private readonly IMerchantService _merchantService;
 
-        public MerchantController(MerchantService merchantService)
+        public MerchantController(IMerchantService merchantService)
         {
             _merchantService = merchantService;
         }
