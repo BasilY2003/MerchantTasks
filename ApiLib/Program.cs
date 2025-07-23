@@ -61,10 +61,10 @@ options.InvalidModelStateResponseFactory = context =>
             Messages = ms.Value!.Errors.Select(e => e.ErrorMessage).ToArray()
         }).ToList();
 
-    var errorResponse = new ErrorResponse
+    var errorResponse = new ResponseMessage
     {
-        StatusCode = ErrorCode.InvalidRequest,
-        ResponseMessage = LocalizedMessage.GetMessage("ValidationFailed"), // e.g. "Validation failed"
+        StatusCode = ResponseCode.InvalidRequest,
+        Message = LocalizedMessage.GetMessage("ValidationFailed"), // e.g. "Validation failed"
         Details = errors
     };
     return new BadRequestObjectResult(errorResponse);

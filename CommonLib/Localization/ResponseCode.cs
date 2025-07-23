@@ -1,6 +1,6 @@
 ﻿namespace CommonLib.Localization
 {
-    public enum ErrorCode
+    public enum ResponseCode
     {
         NotFound = 404,
         InvalidRequest = 400,

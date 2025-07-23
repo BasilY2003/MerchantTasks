@@ -23,10 +23,10 @@ namespace CommonLib.Middlewares
                 context.HttpContext.Request.QueryString);
 
             var InternalErrorMessage = LocalizedMessage.GetMessage("InternalServerError");
-            var errorMessage = new ErrorResponse
+            var errorMessage = new ResponseMessage
             {
-                StatusCode = ErrorCode.InternalServerError,
-                ResponseMessage = InternalErrorMessage,
+                StatusCode = ResponseCode.InternalServerError,
+                Message = InternalErrorMessage,
                 Details = ex.Message,
             };
             context.Result = new ObjectResult(errorMessage)

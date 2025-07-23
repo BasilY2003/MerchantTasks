@@ -18,9 +18,9 @@ namespace CommonLib.Pdf
 
             var sb = new StringBuilder();
 
-            sb.Append("<html>");
-            sb.Append("<head>");
-            sb.Append(@"<style>
+             sb.Append("<html>");
+             sb.Append("<head>");
+             sb.Append(@"<style>
                  table {
                      width: 100%;
                      border-collapse: collapse;
@@ -34,10 +34,9 @@ namespace CommonLib.Pdf
                      background-color: #f2f2f2;
                  }
              </style>");
-            sb.Append("</head>");
+             sb.Append("</head>");
 
-
-            sb.Append($@"
+             sb.Append($@"
                <body>
                    <h1>Group Name: {merchantGroup.Name}</h1>
                    <h3>Id: {merchantGroup.Id}</h3>

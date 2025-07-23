@@ -32,11 +32,11 @@ namespace ApiLib.Controllers
 
             if (newBranch == null)
             {
-               var ErrorResponse = new ErrorResponse
-                {
+               var ErrorResponse = new ResponseMessage
+               {
                     Details = null,
-                    ResponseMessage = LocalizedMessage.GetMessage("NotFound", "merchant", merchantId),
-                    StatusCode = ErrorCode.NotFound,
+                    Message = LocalizedMessage.GetMessage("NotFound", "merchant", merchantId),
+                    StatusCode = ResponseCode.NotFound,
                 };
                 return NotFound(ErrorResponse);
             }

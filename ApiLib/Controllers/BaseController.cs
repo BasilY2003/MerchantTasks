@@ -8,31 +8,31 @@
     public abstract class BaseController : ControllerBase
     {
         protected ActionResult NotFoundResponse(string resource, object id) =>
-            NotFound(new ErrorResponse
+            NotFound(new ResponseMessage
             {
-                ResponseMessage = LocalizedMessage.GetMessage("NotFound", resource, id),
-                StatusCode = ErrorCode.NotFound
+                Message = LocalizedMessage.GetMessage("NotFound", resource, id),
+                StatusCode = ResponseCode.NotFound
             });
 
         protected ActionResult AlreadyUsedUsername(string message, object? details = null) =>
-             Conflict(new ErrorResponse
+             Conflict(new ResponseMessage
              {
-                 ResponseMessage = LocalizedMessage.GetMessage("TakenUserName"),
-                 StatusCode = ErrorCode.Confict,
+                 Message = LocalizedMessage.GetMessage("TakenUserName"),
+                 StatusCode = ResponseCode.Confict,
              });
 
         protected ActionResult UnauthorizedLoginResponse() =>
-         Unauthorized(new ErrorResponse
+         Unauthorized(new ResponseMessage
          {
-             ResponseMessage = LocalizedMessage.GetMessage("LoginCredentials"),
-             StatusCode = ErrorCode.InvalidRequest
+             Message = LocalizedMessage.GetMessage("LoginCredentials"),
+             StatusCode = ResponseCode.InvalidRequest
          });
 
         protected ActionResult SuccessResponse() =>
-         Unauthorized(new ErrorResponse
+         Unauthorized(new ResponseMessage
          {
-             ResponseMessage = LocalizedMessage.GetMessage("Success"),
-             StatusCode = ErrorCode.InvalidRequest
+             Message = LocalizedMessage.GetMessage("Success"),
+             StatusCode = ResponseCode.InvalidRequest
          });
 
         protected string L(string key, params object[] args) =>

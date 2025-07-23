@@ -24,11 +24,11 @@ namespace CommonLib.Middlewares
             var token = context.HttpContext.Request.Headers["Authorization"].FirstOrDefault()?.Split(" ").Last();
             var errorMessage = LocalizedMessage.GetMessage("UnAuthorized");
 
-            var errorResponse = new ErrorResponse
+            var errorResponse = new ResponseMessage
             {
                 Details = null,
-                ResponseMessage = errorMessage,
-                StatusCode = ErrorCode.UnAuthorized,
+                Message = errorMessage,
+                StatusCode = ResponseCode.UnAuthorized,
             };
 
             if (string.IsNullOrEmpty(token))
@@ -38,36 +38,27 @@ namespace CommonLib.Middlewares
             }
 
             ClaimsPrincipal? principal;
+
             try
             {
                 principal = _jwtService.ValidateToken(token);
             }
-            catch (SecurityTokenExpiredException ex)
-            {
-                var expiredMessage = LocalizedMessage.GetMessage("TokenExpired");
-
-                var expiredResponse = new ErrorResponse
-                {
-                    StatusCode = ErrorCode.UnAuthorized,
-                    ResponseMessage = expiredMessage,
-                    Details = ex.Message
-                };
-
-                context.Result = new JsonResult(expiredResponse) { StatusCode = 401 };
-                return;
-            }
             catch (Exception ex)
             {
-                var internalMessage = LocalizedMessage.GetMessage("InternalServerError");
+                var isExpired = ex is SecurityTokenExpiredException;
 
-                var internalError = new ErrorResponse
+                var messageKey = isExpired ? "TokenExpired" : "InternalServerError";
+                var statusCode = ResponseCode.UnAuthorized;
+                var httpStatus = 401;
+
+                var response = new ResponseMessage
                 {
-                    StatusCode = ErrorCode.InternalServerError,
-                    ResponseMessage = internalMessage,
+                    StatusCode = statusCode,
+                    Message = LocalizedMessage.GetMessage(messageKey),
                     Details = ex.Message
                 };
 
-                context.Result = new JsonResult(internalError) { StatusCode = 500 };
+                context.Result = new JsonResult(errorResponse) { StatusCode = httpStatus };
                 return;
             }
 
