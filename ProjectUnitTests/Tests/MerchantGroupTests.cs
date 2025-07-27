@@ -39,7 +39,6 @@ namespace ProjectUnitTests.Tests
         [Fact]
         public async Task CreateGroupAsync_ShouldRemoveAllCacheKey_WhenGroupIsCreated()
         {
-        
             var utcNow = DateTime.UtcNow;
             var request = new MerchantGroupRequest { Name = "Test Group" };
 
@@ -68,7 +67,5 @@ namespace ProjectUnitTests.Tests
             Assert.NotNull(result);
             Assert.Equal(createdGroup.Id, result.Id);
         }
-
-
     }
 }

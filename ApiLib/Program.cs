@@ -64,7 +64,7 @@ options.InvalidModelStateResponseFactory = context =>
     var errorResponse = new ResponseMessage
     {
         StatusCode = ResponseCode.InvalidRequest,
-        Message = LocalizedMessage.GetMessage("ValidationFailed"), // e.g. "Validation failed"
+        Message = LocalizedMessage.GetMessage("ValidationFailed"),
         Details = errors
     };
     return new BadRequestObjectResult(errorResponse);

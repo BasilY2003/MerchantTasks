@@ -1,8 +1,8 @@
-﻿using CommonLib.Interfaces;
-using CommonLib.Middlewares;
+﻿using CommonLib.Middlewares;
 using CommonLib.Pdf;
 using CommonLib.Services;
 using CommonLib.Utils;
+using DataLib.RequestBody;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -14,6 +14,10 @@ namespace CommonLib
         {
             services.AddSingleton<LoggingService>();
             services.AddSingleton<PdfGenerator>();
+
+            services.Configure<Email>(config.GetSection("EmailSettings"));
+            services.AddTransient<EmailService>();
+
 
             services.Scan(scan => scan
                 .FromAssemblyOf<JwtService>() 
