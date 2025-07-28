@@ -1,5 +1,4 @@
 ﻿using CommonLib.Models;
-using CommonLib.RequestBody;
 
 namespace DataLib.Interfaces
 {
@@ -7,6 +6,6 @@ namespace DataLib.Interfaces
     {
         Task<List<MerchantBranches>> GetAllBranches();
         Task<MerchantBranches?> GetBranchById(long branchId);
-        Task<MerchantBranches> AddBranch(BranchRequest branchRequest, Merchants merchant);
+        Task<MerchantBranches> AddBranch(MerchantBranches branch, Merchants merchant);
     }
 }

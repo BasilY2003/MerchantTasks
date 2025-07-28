@@ -1,10 +1,8 @@
 ﻿using CommonLib.Interfaces;
-using CommonLib.Localization;
 using CommonLib.Middlewares;
-using CommonLib.Models;
 using CommonLib.Pdf;
 using CommonLib.RequestBody;
-using CommonLib.Services;
+using DataLib.RequestBody;
 using Microsoft.AspNetCore.Mvc;
 
 
@@ -12,16 +10,18 @@ namespace ApiLib.Controllers
 {
     [ApiController]
     [Route("api/groups")]
-    [ServiceFilter(typeof(JwtAuthFilter))]
+    //[ServiceFilter(typeof(JwtAuthFilter))]
     public class MerchantGroupController : BaseController
     {
         private readonly IMerchantGroupService _service;
         private readonly PdfGenerator _pdfGenerator;
+        private readonly IAesEncryptionService _aesEncryptionService;
 
-        public MerchantGroupController(IMerchantGroupService service, PdfGenerator pdfGenerator)
+        public MerchantGroupController(IMerchantGroupService service, PdfGenerator pdfGenerator, IAesEncryptionService aesEncryptionService)
         {
             _service = service;
             _pdfGenerator = pdfGenerator;
+            _aesEncryptionService = aesEncryptionService;
         }
 
         [HttpGet("{id}")]
@@ -42,6 +42,28 @@ namespace ApiLib.Controllers
             _pdfGenerator.GeneratePdf(group);
 
             return Ok();
+        }
+
+        [HttpGet("encryption")]
+        public async Task<IActionResult> TestAdvancedEncryptionStandard()
+        {
+            string str = "This is the encrypted String";
+            var (encryptedData, key, iv) = _aesEncryptionService.Encrypt(str);
+            var original = _aesEncryptionService.Decrypt(encryptedData, key,iv);
+           
+            return Ok(new AesRequest{
+              EncryptedMessage = encryptedData,
+              Key = key,
+              Iv = iv,
+            });
+        }
+
+        [HttpPost("decryption")]
+        public async Task<IActionResult> TestDycryption([FromBody] AesRequest body1)
+        {
+            var original = _aesEncryptionService.Decrypt(body1.EncryptedMessage,body1.Key,body1.Iv);
+
+            return Ok(original);
         }
 
         [HttpGet("ex")]

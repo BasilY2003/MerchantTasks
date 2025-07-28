@@ -1,6 +1,6 @@
 ﻿using CommonLib.Interfaces;
 using CommonLib.Localization;
-using Microsoft.AspNetCore.Identity.Data;
+using DataLib.RequestBody;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiLib.Controllers
@@ -19,7 +19,7 @@ namespace ApiLib.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] LoginRequest req)
         {
-            var success = await _authService.RegisterAsync(req.Email, req.Password);
+            var success = await _authService.RegisterAsync(req.Username, req.Password);
           
             if (!success) return AlreadyUsedUsername(LocalizedMessage.GetMessage("TakenUserName"));
             return Ok("User registered");
@@ -28,7 +28,7 @@ namespace ApiLib.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest req)
         {
-            var token = await _authService.LoginAsync(req.Email, req.Password);
+            var token = await _authService.LoginAsync(req.Username, req.Password);
 
             if (token == null) return UnauthorizedLoginResponse();
             return Ok(new { token });

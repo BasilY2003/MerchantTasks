@@ -1,14 +1,15 @@
 ﻿using CommonLib.Interfaces;
 using CommonLib.Localization;
+using CommonLib.Middlewares;
 using CommonLib.Models;
 using CommonLib.RequestBody;
-using CommonLib.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiLib.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [ServiceFilter(typeof(JwtAuthFilter))]
     public class BranchController : ControllerBase
     {
         private readonly IMerchantBranchService _branchService;

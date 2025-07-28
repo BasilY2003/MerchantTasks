@@ -3,7 +3,7 @@
     using MailKit.Net.Smtp;
     using MimeKit;
     using Microsoft.Extensions.Options;
-    using DataLib.RequestBody;
+    using CommonLib.RequestBody;
 
     public class EmailService
     {

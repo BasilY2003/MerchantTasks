@@ -1,8 +1,8 @@
-﻿namespace ApiLib.Controllers
-{
-    using CommonLib.Localization;
-    using Microsoft.AspNetCore.Mvc;
+﻿using CommonLib.Localization;
+using Microsoft.AspNetCore.Mvc;
 
+namespace ApiLib.Controllers
+{
     [ApiController]
     [Route("api/[controller]")]
     public abstract class BaseController : ControllerBase

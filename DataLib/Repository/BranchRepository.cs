@@ -1,6 +1,5 @@
 ﻿
 using CommonLib.Models;
-using CommonLib.RequestBody;
 using DataLib.Interfaces;
 using NHibernate;
 using NHibernate.Linq;
@@ -30,27 +29,27 @@ namespace DataLib.Repository
             return null;
         }
 
-        public async  Task<MerchantBranches> AddBranch(BranchRequest branchRequest, Merchants merchant)
+        public async  Task<MerchantBranches> AddBranch(MerchantBranches branch, Merchants merchant)
         {
             var tx = _session.BeginTransaction();
 
-            MerchantBranches branch = new MerchantBranches
-            {
-                Merchant = merchant,
-                Address = branchRequest.Address,
-                IsMainBranch = branchRequest.IsMainBranch,
-                CityId = branchRequest.CityId,
-                BranchName = branchRequest.BranchName,
-                ContactPersonId = branchRequest.ContactPersonId,
-                GovernateId = branchRequest.GovernateId,
-                Region = branchRequest.Region,
-                Mobile = branchRequest.Mobile,
-                Phone = branchRequest.Phone,
-                Status = branchRequest.Status,
-                Fax = branchRequest.Fax,
-                Website = branchRequest.Website,
-                Gps = branchRequest.Gps,
-            };
+            //MerchantBranches branch = new MerchantBranches
+            //{
+            //    Merchant = merchant,
+            //    Address = branchRequest.Address,
+            //    IsMainBranch = branchRequest.IsMainBranch,
+            //    CityId = branchRequest.CityId,
+            //    BranchName = branchRequest.BranchName,
+            //    ContactPersonId = branchRequest.ContactPersonId,
+            //    GovernateId = branchRequest.GovernateId,
+            //    Region = branchRequest.Region,
+            //    Mobile = branchRequest.Mobile,
+            //    Phone = branchRequest.Phone,
+            //    Status = branchRequest.Status,
+            //    Fax = branchRequest.Fax,
+            //    Website = branchRequest.Website,
+            //    Gps = branchRequest.Gps,
+            //};
 
             await _session.SaveAsync(merchant);
             await tx.CommitAsync();

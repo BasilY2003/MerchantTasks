@@ -1,5 +1,5 @@
 ﻿using CommonLib.Models;
-using CommonLib.RequestBody;
+using DataLib.Requests;
 
 namespace DataLib.Interfaces
 {

@@ -1,6 +1,4 @@
-﻿
-
-namespace CommonLib.RequestBody
+﻿namespace DataLib.Requests
 {
     public class SearchRequest
     {
@@ -9,5 +7,4 @@ namespace CommonLib.RequestBody
         public int? BusinessType { get; set; }
         public string? ManagerName { get; set; }
     }
-
 }

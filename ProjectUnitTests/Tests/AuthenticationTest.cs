@@ -26,7 +26,8 @@ namespace ProjectUnitTests.Tests
                     _userRepoMock.Object,
                     _tokenRepoMock.Object,
                     _jwtServiceMock.Object,
-                    _PasswordHasherMock.Object
+                    _PasswordHasherMock.Object,
+                    null
                 );
             }
 

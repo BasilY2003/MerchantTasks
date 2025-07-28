@@ -1,4 +1,4 @@
-﻿namespace DataLib.RequestBody
+﻿namespace CommonLib.RequestBody
 {
     public class Email
     {

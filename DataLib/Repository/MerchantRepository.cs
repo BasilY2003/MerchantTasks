@@ -1,6 +1,6 @@
 ﻿using CommonLib.Models;
-using CommonLib.RequestBody;
 using DataLib.Interfaces;
+using DataLib.Requests;
 using NHibernate;
 using NHibernate.Linq;
 

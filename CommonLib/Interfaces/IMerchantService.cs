@@ -1,5 +1,6 @@
 ﻿using CommonLib.DTOs;
 using CommonLib.RequestBody;
+using DataLib.Requests;
 
 namespace CommonLib.Interfaces
 {
