@@ -13,9 +13,7 @@ namespace DataLib.Repository
         public MerchantRepository(ISession session)
         {
             _session = session;
-        }
-
-        
+        } 
 
         public async Task<Merchants?> GetMerchantWithGroupByIdAsync(long id)
         {

@@ -1,4 +1,5 @@
 ﻿using CommonLib;
+using DataLib.Interfaces;
 using DataLib.Repository;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,9 @@ namespace DataLib
             services.AddSingleton(helper);
             services.AddSingleton(helper.SessionFactory);
             services.AddScoped<ISession>(sp => helper.SessionFactory.OpenSession());
+            services.AddScoped<IUserRepository, UserRepository>();
+
+
 
             services.Scan(scan => scan
              .FromAssemblyOf<MerchantRepository>()

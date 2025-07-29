@@ -16,11 +16,11 @@ namespace DataLib.Maps
             Map(x => x.Role).Not.Nullable();
             Map(x => x.CreatedAt);
             Map(x => x.DeletedAt);
+            Map(x => x.PublicKey).Nullable().Length(1000);
 
             HasOne(x => x.Token)
                 .PropertyRef("User")
                 .Cascade.None();  
-            ;
         }
     }
 }

@@ -9,5 +9,7 @@
         public virtual DateTime CreatedAt { get; set; } = DateTime.UtcNow;
         public virtual DateTime? DeletedAt { get; set; }
         public virtual JwtToken? Token { get; set; }
+
+        public virtual string PublicKey { get; set; } = string.Empty;
     }
 }

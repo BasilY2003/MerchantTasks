@@ -2,11 +2,14 @@ using CommonLib;
 using CommonLib.Localization;
 using CommonLib.Middlewares;
 using DataLib;
+using DataLib.Interfaces;
+using DataLib.Repository;
 using DataLib.Resources;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
+using PdfSharp.Charting;
 using Serilog;
 using System.Globalization;
 
@@ -30,6 +33,7 @@ builder.Host.UseSerilog();
 builder.Services.AddLocalization();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 builder.Services.AddControllers(options =>
 {

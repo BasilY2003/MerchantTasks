@@ -3,7 +3,9 @@
     public class AesRequest
     {
        public byte[] EncryptedMessage { get; set; }
-       public byte[] Key { get; set; }
-       public byte[] Iv { get; set; }
+       public string Key { get; set; }
+       public string Iv { get; set; }
     }
+
+  
 }

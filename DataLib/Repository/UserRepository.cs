@@ -20,6 +20,11 @@ namespace DataLib.Repository
                 .FirstOrDefaultAsync(u => u.Username == username);
         }
 
+        public async Task<User?> GetById(long id)
+        {
+            return await _session.GetAsync<User>(id);
+        }
+
         public async Task<bool> UsernameExistsAsync(string username)
         {
             return await _session.Query<User>()

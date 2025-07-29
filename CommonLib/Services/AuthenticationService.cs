@@ -12,6 +12,7 @@ namespace CommonLib.Services
         private readonly IJwtService _jwtService;
         private readonly IPasswordHasher _passwordHasher;
         private readonly EmailService _emailService;
+        private readonly IRsaKeyService _rsaKeyService;
 
 
         public AuthenticationService(
@@ -19,13 +20,15 @@ namespace CommonLib.Services
             IJwtTokenRepository tokenRepo,
             IJwtService jwtService,
             IPasswordHasher passwordHasher,
-            EmailService emailService)
+            EmailService emailService,
+            IRsaKeyService rsaKeyService)
         {
             _userRepo = userRepo;
             _tokenRepo = tokenRepo;
             _jwtService = jwtService;
             _passwordHasher = passwordHasher;
             _emailService = emailService;
+            _rsaKeyService = rsaKeyService;
         }
 
         public async Task<bool> RegisterAsync(string username, string password)
@@ -40,6 +43,10 @@ namespace CommonLib.Services
             };
 
             await _userRepo.SaveAsync(user);
+            var publicKey = _rsaKeyService.GenerateAndStoreKeys(user.Id);
+            user.PublicKey = publicKey;
+            await _userRepo.SaveAsync(user);
+
             return true;
         }
 
