@@ -1,3 +1,4 @@
+using ApiLib;
 using CommonLib;
 using CommonLib.Localization;
 using CommonLib.Middlewares;
@@ -9,15 +10,15 @@ using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Options;
-using PdfSharp.Charting;
 using Serilog;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddScoped<JwtAuthFilter>();
 builder.Services.AddDataLib(builder.Configuration);
 builder.Services.AddCommonLib(builder.Configuration);
-builder.Services.AddScoped<JwtAuthFilter>();
+
 
 builder.Services.AddStackExchangeRedisCache(options =>
 {
@@ -81,11 +82,17 @@ app.UseRequestLocalization(app.Services.GetRequiredService<IOptions<RequestLocal
 
 var localizer = app.Services.GetRequiredService<IStringLocalizer<SharedResource>>();
 LocalizedMessage.Configure(localizer);
-
+app.UseHttpsRedirection();
 app.UseSwagger();
 app.UseSwaggerUI();
-app.UseMiddleware<LoggingMiddleware>(); 
-app.UseHttpsRedirection();
+
+app.UseRouting();
+app.UseAuthentication();
 app.UseAuthorization();
+await ServerKeyIntializer.Initialize(app.Services);
+
+app.UseMiddleware<LoggingMiddleware>();
+app.UseMiddleware<EncryptionMiddleware>();
+
 app.MapControllers();
 app.Run();

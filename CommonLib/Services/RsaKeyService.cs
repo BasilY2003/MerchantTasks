@@ -31,23 +31,21 @@ namespace CommonLib.Services
             return $"-----BEGIN {label}-----\n{base64}\n-----END {label}-----";
         }
 
-        public byte[] EncryptWithPublicKey(string plainText, string publicKeyPem)
+        public byte[] EncryptWithPublicKey(byte[] data, string publicKeyPem)
         {
             using RSA rsa = RSA.Create();
             rsa.ImportFromPem(publicKeyPem.ToCharArray());
-
-            byte[] data = Encoding.UTF8.GetBytes(plainText);
-
             return rsa.Encrypt(data, RSAEncryptionPadding.OaepSHA256);
         }
 
-        public string DecryptWithPrivateKey(byte[] encryptedData, string privateKeyPem)
+
+        public byte[] DecryptWithPrivateKey(byte[] encryptedData, string privateKeyPem)
         {
             using RSA rsa = RSA.Create();
             rsa.ImportFromPem(privateKeyPem.ToCharArray());
 
             byte[] decryptedBytes = rsa.Decrypt(encryptedData, RSAEncryptionPadding.OaepSHA256);
-            return Encoding.UTF8.GetString(decryptedBytes);
+            return decryptedBytes;
         }
     }
 }

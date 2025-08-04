@@ -3,7 +3,7 @@
     public interface IRsaKeyService
     {
         string GenerateAndStoreKeys(long userId);
-        byte[] EncryptWithPublicKey(string plainText, string publicKeyPem);
-        string DecryptWithPrivateKey(byte[] encryptedData, string privateKeyPem);
+        byte[] EncryptWithPublicKey(byte[] plainText, string publicKeyPem);
+        byte[] DecryptWithPrivateKey(byte[] encryptedData, string privateKeyPem);
     }
 }

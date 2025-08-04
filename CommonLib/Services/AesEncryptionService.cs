@@ -5,21 +5,19 @@ namespace CommonLib.Services
 {
     public class AesEncryptionService : IAesEncryptionService
     {
-        public string Decrypt(byte[] cipherText, byte[] key, byte[] iv)
+        public string Decrypt(byte[] cipherText, byte[] keyWithIv)
         {
             if (cipherText == null || cipherText.Length <= 0)
                 throw new ArgumentNullException("cipherText");
-            if (key == null || key.Length <= 0)
+            if (keyWithIv == null || keyWithIv.Length <= 0)
                 throw new ArgumentNullException("Key");
-            if (iv == null || iv.Length <= 0)
-                throw new ArgumentNullException("IV");
 
             string plaintext = null;
 
             using (Aes aesAlg = Aes.Create())
             {
-                aesAlg.Key = key;
-                aesAlg.IV = iv;
+                aesAlg.Key = keyWithIv[..32];
+                aesAlg.IV = keyWithIv[32..];
 
                 ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
@@ -38,18 +36,18 @@ namespace CommonLib.Services
             return plaintext;
         }
 
-        public (byte[] EncryptedData, byte[] Key, byte[] IV) Encrypt(string plainText)
+        public (byte[] EncryptedData, byte[] Key) Encrypt(string plainText)
         {
             if (plainText == null || plainText.Length <= 0)
                 throw new ArgumentNullException("plainText");
 
-            var (key, iv) = GenerateKeyAndIV();
+            var keyAndIv= GenerateKeyAndIV();
             byte[] encrypted;
 
             using (Aes aesAlg = Aes.Create())
             {
-                aesAlg.Key = key;
-                aesAlg.IV = iv;
+                aesAlg.Key = keyAndIv[..32];
+                aesAlg.IV = keyAndIv[32..];
 
                 ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
 
@@ -65,19 +63,16 @@ namespace CommonLib.Services
                     encrypted = msEncrypt.ToArray();
                 }
 
-                return (encrypted,key,iv);
+                return (encrypted,keyAndIv);
             }
         }
 
-        public (byte[] Key, byte[] IV) GenerateKeyAndIV()
+        public byte[] GenerateKeyAndIV()
         {
-            byte[] key = new byte[32];
-            byte[] iv = new byte[16]; 
+            byte[] keyAndIv = new byte[48];
+            RandomNumberGenerator.Fill(keyAndIv);
 
-            RandomNumberGenerator.Fill(key);
-            RandomNumberGenerator.Fill(iv);
-
-            return (key, iv);
+            return keyAndIv;
         }
     }
 }

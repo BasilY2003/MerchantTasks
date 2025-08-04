@@ -107,7 +107,7 @@ namespace DataLib.Repository
         {
             var query =  _session.Query<Merchants>().Where(m => m.DeletedAt == null);
 
-            if (!string.IsNullOrWhiteSpace(request.Name))
+            if (!string.IsNullOrWhiteSpace(request.Name)) 
                 query = query.Where(m => m.Name.Contains(request.Name));
 
             if (request.Status == true)

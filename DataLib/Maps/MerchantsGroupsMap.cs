@@ -16,10 +16,7 @@ namespace CommonLib.Mappings
             Map(x => x.CreatedAt).Column("CREATED_AT").Not.Nullable();
             Map(x => x.UpdatedAt).Column("UPDATED_AT").Not.Nullable();
 
-            HasMany(x => x.Merchants)
-              .KeyColumn("GROUP_ID")
-              .Inverse();
-
+            HasMany(x => x.Merchants).KeyColumn("GROUP_ID").Inverse();
         }
     }
 }

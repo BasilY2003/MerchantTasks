@@ -1,11 +1,14 @@
-﻿namespace CommonLib.RequestBody
+﻿using System.Text.Json.Serialization;
+
+namespace CommonLib.RequestBody
 {
     public class AesRequest
     {
-       public byte[] EncryptedMessage { get; set; }
-       public string Key { get; set; }
-       public string Iv { get; set; }
-    }
 
-  
+        [JsonPropertyName("encryptedMessage")]
+        public string EncryptedMessage { get; set; }
+       
+        [JsonPropertyName("keyWithIv")]
+        public string KeyWithIv { get; set; }
+    }
 }

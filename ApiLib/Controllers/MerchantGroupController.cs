@@ -4,6 +4,9 @@ using CommonLib.Pdf;
 using CommonLib.RequestBody;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Security.Cryptography;
+using System.Text.Json;
+using DataLib.Interfaces;
 
 
 namespace ApiLib.Controllers
@@ -17,15 +20,15 @@ namespace ApiLib.Controllers
         private readonly PdfGenerator _pdfGenerator;
         private readonly IAesEncryptionService _aesEncryptionService;
         private readonly IRsaKeyService _rsaKeyService;
-        private readonly IUserService _userService;
+        private readonly IServerKeyRepository _serverKey;
 
-        public MerchantGroupController(IMerchantGroupService service, PdfGenerator pdfGenerator, IAesEncryptionService aesEncryptionService, IRsaKeyService rsaKeyService,IUserService userService)
+        public MerchantGroupController(IMerchantGroupService service, PdfGenerator pdfGenerator,IServerKeyRepository keyRepository,IRsaKeyService rsaKeyService,IAesEncryptionService aesEncryptionService)
         {
             _service = service;
             _pdfGenerator = pdfGenerator;
             _aesEncryptionService = aesEncryptionService;
             _rsaKeyService = rsaKeyService;
-            _userService = userService;
+            _serverKey = keyRepository;
         }
 
         [HttpGet("{id}")]
@@ -49,49 +52,39 @@ namespace ApiLib.Controllers
         }
 
         [HttpPost("encryption")]
-        public async Task<IActionResult> TestAdvancedEncryptionStandard([FromBody] RsaEncryptRequest request)
+        public async Task<IActionResult> TestAdvancedEncryptionStandard([FromBody] Object req)
         {
-            string str = "This is the encrypted String With RSA and AES";
 
-            // Encrypt the message and return the Key and the IV 
-            var (encryptedData, key, iv) = _aesEncryptionService.Encrypt(str);
+            string jsonString = JsonSerializer.Serialize(req);
 
-            var userNameClaim = User.FindFirst(ClaimTypes.Name)?.Value;
-            //var u = await _userService.GetByUsernameAsync(userNameClaim);
+            var (encryptedData, key) = _aesEncryptionService.Encrypt(jsonString);
 
-            var publicKey = request.PublicKey;
-
-            // Encrypt the IV and the Key using the recipient's public key
-            var enKey = _rsaKeyService.EncryptWithPublicKey(Convert.ToBase64String(key), publicKey);
-            var enIv = _rsaKeyService.EncryptWithPublicKey(Convert.ToBase64String(iv), publicKey);
+            var Keys = await _serverKey.GetAsync();
+            var publicKey = Keys.PublicKey;
+            var enKey = _rsaKeyService.EncryptWithPublicKey(key, publicKey);
+           //  var enIv = _rsaKeyService.EncryptWithPublicKey(iv, publicKey);
 
             return Ok(new AesRequest
             {
-                EncryptedMessage = encryptedData,
-                Key = Convert.ToBase64String(enKey), 
-                Iv = Convert.ToBase64String(enIv)   
+                EncryptedMessage = Convert.ToBase64String(encryptedData),
+                KeyWithIv = Convert.ToBase64String(enKey),
+              //  Iv = Convert.ToBase64String(enIv)
             });
         }
 
         [HttpPost("decryption")]
         public async Task<IActionResult> TestDycryption([FromBody] AesRequest body1)
         {
-            byte[] keyBytes = Convert.FromBase64String(body1.Key);
-            byte[] ivBytes = Convert.FromBase64String(body1.Iv);
+            byte[] keyBytes = Convert.FromBase64String(body1.KeyWithIv);
 
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             var folderPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "MyApp", "keys", userIdClaim);
             var privateKeyPath = Path.Combine(folderPath, "private.pem");
             string privateKeyPem = await System.IO.File.ReadAllTextAsync(privateKeyPath);
 
-            string decryptedKeyString = _rsaKeyService.DecryptWithPrivateKey(keyBytes, privateKeyPem);
-            string decryptedIvString = _rsaKeyService.DecryptWithPrivateKey(ivBytes, privateKeyPem);
-
-            // Convert string back to byte[] (if string is base64)
-            byte[] decryptedKey = Convert.FromBase64String(decryptedKeyString);
-            byte[] decryptedIv = Convert.FromBase64String(decryptedIvString);
-
-            var original = _aesEncryptionService.Decrypt(body1.EncryptedMessage, decryptedKey, decryptedIv);
+           var decryptedKey = _rsaKeyService.DecryptWithPrivateKey(keyBytes, privateKeyPem);
+           var str = Convert.FromBase64String(body1.EncryptedMessage);
+            var original = _aesEncryptionService.Decrypt(str, decryptedKey);
 
             return Ok(original);
         }
@@ -112,6 +105,8 @@ namespace ApiLib.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateGroup([FromBody] MerchantGroupRequest request)
         {
+            var user = HttpContext.User;
+            Console.WriteLine(user.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var created = await _service.CreateGroupAsync(request);
             return Ok(created);
         }

@@ -17,18 +17,11 @@ namespace CommonLib.Mappings
             Map(x => x.DeletedAt).Column("DELETED_AT").Nullable();
             Map(x => x.CreatedAt).Column("CREATED_AT").Not.Nullable();
             Map(x => x.UpdatedAt).Column("UPDATED_AT").Not.Nullable();
-            Map(x => x.ManagerName)
-                .Column("MANAGER_NAME")
-                .Not.Nullable();
+            Map(x => x.ManagerName).Column("MANAGER_NAME").Not.Nullable();
 
-            References(x => x.MerchantsGroup)
-                .Column("GROUP_ID") 
-                .Not.Nullable();
+            References(x => x.MerchantsGroup).Column("GROUP_ID").Not.Nullable();
 
-            HasMany(x => x.MerchantBranches)
-                .KeyColumn("MERCHANT_ID")
-                .Inverse();
-
+            HasMany(x => x.MerchantBranches).KeyColumn("MERCHANT_ID").Inverse();
         }
     }
 }

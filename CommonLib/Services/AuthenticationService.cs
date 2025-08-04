@@ -65,7 +65,7 @@ namespace CommonLib.Services
 
             var token = _jwtService.GenerateToken(user);
             await _tokenRepo.SaveTokenAsync(token,user);
-            await _emailService.SendEmailAsync("2003.basil.yousef@gmail.com", "Welcome!", "<h1>This is a test email.</h1>");
+            //await _emailService.SendEmailAsync("2003.basil.yousef@gmail.com", "Welcome!", "<h1>This is a test email.</h1>");
 
             return token;
         }
